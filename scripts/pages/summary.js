@@ -75,6 +75,7 @@ function createSummaryAccumulator(tasks) {
 		inProgressCount: 0,
 		awaitingFeedbackCount: 0,
 		urgentCount: 0,
+		emailRequestsCount: 0,
 		nearestDate: null,
 	};
 }
@@ -90,6 +91,7 @@ function handleSummaryTask(accumulator, task) {
 	incrementSummaryStatusCount(accumulator, status);
 	incrementSummaryUrgentCount(accumulator, task.priority);
 	updateSummaryNearestDate(accumulator, status, task.dueDate);
+	incrementSummaryEmailRequestsCount(accumulator, task);
 }
 
 /**
@@ -122,6 +124,18 @@ function incrementSummaryUrgentCount(accumulator, priority) {
 }
 
 /**
+ * Increments email-request counter when task originates from email.
+ * Supports source, createdVia, and creatorType fields defensively.
+ * @param {Object} accumulator
+ * @param {Object} task
+ */
+function incrementSummaryEmailRequestsCount(accumulator, task) {
+	if (task.source === "email") { accumulator.emailRequestsCount++; return; }
+	if (task.createdVia === "email") { accumulator.emailRequestsCount++; return; }
+	if (task.creatorType === "external") accumulator.emailRequestsCount++;
+}
+
+/**
  * Updates nearest upcoming due date.
  * @param {Object} accumulator
  * @param {string} status
@@ -148,6 +162,7 @@ function buildSummaryStatsResult(accumulator) {
 		tasksInBoard: accumulator.tasks.length,
 		inProgressCount: accumulator.inProgressCount,
 		awaitingFeedbackCount: accumulator.awaitingFeedbackCount,
+		emailRequestsCount: accumulator.emailRequestsCount,
 		upcomingDate: getSummaryUpcomingDateLabel(accumulator.nearestDate),
 	};
 }
@@ -184,6 +199,7 @@ function getSummaryMetricEntries(stats) {
 		["summaryTasksInBoard", stats.tasksInBoard],
 		["summaryInProgressCount", stats.inProgressCount],
 		["summaryAwaitingFeedbackCount", stats.awaitingFeedbackCount],
+		["summaryEmailRequestsCount", stats.emailRequestsCount],
 		["summaryUpcomingDate", stats.upcomingDate],
 	];
 }

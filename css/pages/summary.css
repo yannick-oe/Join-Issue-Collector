@@ -196,6 +196,11 @@ h2 {
     color: #ffffff;
 }
 
+.summary-email-row {
+    justify-content: flex-start;
+    margin-top: 28px;
+}
+
 .box-size:hover,
 .sumary-third-line:hover,
 .sumary-second:hover {
