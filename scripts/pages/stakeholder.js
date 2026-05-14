@@ -28,12 +28,9 @@ const SH_REQUEST_SUBJECT = "[JOIN-ISSUE-COLLECTOR] New Stakeholder Request";
 
 /**
  * Pre-filled body template shown in the user's email client.
- * Machine-readable header lines let n8n identify and parse the request.
+ * Clean, user-facing structure — n8n identifies the request via the subject prefix.
  */
 const SH_REQUEST_BODY = [
-    "JOIN_REQUEST_SOURCE: stakeholder-page",
-    "JOIN_REQUEST_VERSION: 1",
-    "",
     "Hi Join team,",
     "",
     "I would like to submit the following request:",
@@ -52,10 +49,47 @@ const SH_REQUEST_BODY = [
 
 /**
  * In-memory counter for the current session.
- * In production this would be loaded from Firebase / n8n.
+ * Populated from Firebase on page load via loadTodayEmailRequestCount().
  * @type {number}
  */
 let shRequestsUsedToday = 0;
+
+// #endregion
+
+// #region Firebase helpers
+
+/**
+ * Counts email requests processed today based on Firebase task data.
+ * Falls back to 0 if Firebase is unreachable or returns unexpected data.
+ *
+ * @returns {Promise<number>}
+ */
+async function loadTodayEmailRequestCount() {
+    try {
+        const tasks = await loadTasks();
+        if (!Array.isArray(tasks)) return 0;
+        return tasks.filter(
+            (t) => t.isEmailRequest === true && isTimestampToday(t.requestReceivedAt)
+        ).length;
+    } catch (_) {
+        return 0;
+    }
+}
+
+/**
+ * Returns true if a unix timestamp (ms) falls on the current calendar day.
+ *
+ * @param {number|null} ts
+ * @returns {boolean}
+ */
+function isTimestampToday(ts) {
+    if (!ts) return false;
+    const d = new Date(ts);
+    const now = new Date();
+    return d.getFullYear() === now.getFullYear() &&
+           d.getMonth() === now.getMonth() &&
+           d.getDate() === now.getDate();
+}
 
 // #endregion
 
@@ -65,7 +99,8 @@ let shRequestsUsedToday = 0;
  * Entry point — called via <body onload>.
  * Reads the ?view query param and renders the correct screen.
  */
-function initStakeholderPage() {
+async function initStakeholderPage() {
+    shRequestsUsedToday = await loadTodayEmailRequestCount();
     const view = getViewParam();
     switch (view) {
         case "stakeholder":
@@ -93,9 +128,11 @@ function showWelcomeScreen() {
 
 /**
  * Shows the stakeholder request screen.
- * Redirects to limit-reached if the quota is already exhausted.
+ * Reloads today's count from Firebase and redirects to limit-reached
+ * if the quota is already exhausted.
  */
-function showStakeholderScreen() {
+async function showStakeholderScreen() {
+    shRequestsUsedToday = await loadTodayEmailRequestCount();
     if (shRequestsUsedToday >= SH_DAILY_LIMIT) {
         showLimitReachedScreen();
         return;
