@@ -92,7 +92,8 @@ function boardNormalizeTask(task) {
 	if (!task || typeof task !== "object") return null;
 	const normalizedTaskText = getBoardNormalizedTaskTextFields(task);
 	const normalizedTaskMeta = getBoardNormalizedTaskMetaFields(task);
-	return { ...normalizedTaskText, ...normalizedTaskMeta };
+	const normalizedTaskOrigin = getBoardNormalizedTaskOriginFields(task);
+	return { ...normalizedTaskText, ...normalizedTaskMeta, ...normalizedTaskOrigin };
 }
 
 /**
@@ -120,6 +121,26 @@ function getBoardNormalizedTaskMetaFields(task) {
 		subtasks: boardNormalizeSubtasks(task.subtasks),
 		status: boardNormalizeStatus(task.status),
 		createdAt: Number(task.createdAt || Date.now()),
+	};
+}
+
+/**
+ * Builds normalized task origin and creator fields.
+ * Falls back gracefully for tasks that predate these fields.
+ * @param {Object} task
+ * @returns {Object}
+ */
+function getBoardNormalizedTaskOriginFields(task) {
+	const isEmail = !!task.isEmailRequest;
+	return {
+		isEmailRequest: isEmail,
+		aiGenerated: task.aiGenerated !== undefined ? !!task.aiGenerated : isEmail,
+		requestSource: String(task.requestSource || task.source || (isEmail ? "email" : "manual")),
+		requestStatus: String(task.requestStatus || ""),
+		requestReceivedAt: task.requestReceivedAt || null,
+		creatorType: String(task.creatorType || (isEmail ? "external" : "member")),
+		creatorLabel: String(task.creatorLabel || task.creatorName || ""),
+		creatorEmail: String(task.creatorEmail || ""),
 	};
 }
 

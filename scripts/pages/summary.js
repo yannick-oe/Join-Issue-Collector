@@ -125,11 +125,13 @@ function incrementSummaryUrgentCount(accumulator, priority) {
 
 /**
  * Increments email-request counter when task originates from email.
- * Supports source, createdVia, and creatorType fields defensively.
+ * Supports isEmailRequest, requestSource, source, createdVia, and creatorType fields defensively.
  * @param {Object} accumulator
  * @param {Object} task
  */
 function incrementSummaryEmailRequestsCount(accumulator, task) {
+	if (task.isEmailRequest === true) { accumulator.emailRequestsCount++; return; }
+	if (task.requestSource === "email") { accumulator.emailRequestsCount++; return; }
 	if (task.source === "email") { accumulator.emailRequestsCount++; return; }
 	if (task.createdVia === "email") { accumulator.emailRequestsCount++; return; }
 	if (task.creatorType === "external") accumulator.emailRequestsCount++;

@@ -221,8 +221,30 @@ function validateTaskForm() {
  */
 function buildTaskPayload() {
 	const teamMembers = addTaskState.selectedContactIds.slice();
-	const subtasks = addTaskState.subtasks.map((item) => ({ ...item, done: false }));
-	return { id: createId("t"), title: getInputValue("taskTitle").trim(), description: getInputValue("taskDescription").trim(), dueDate: getInputValue("taskDate"), priority: addTaskState.priority, category: addTaskState.selectedCategory, teamMembers, subtasks, status: "triage", createdAt: Date.now() };
+	const subtasks = addTaskState.subtasks.map((s) => ({ ...s, done: false }));
+	return {
+		id: createId("t"), title: getInputValue("taskTitle").trim(),
+		description: getInputValue("taskDescription").trim(),
+		dueDate: getInputValue("taskDate"), priority: addTaskState.priority,
+		category: addTaskState.selectedCategory, teamMembers, subtasks,
+		status: "triage", createdAt: Date.now(), ...buildTaskManualOriginFields(),
+	};
+}
+
+/**
+ * Returns origin metadata fields for manually created member tasks.
+ * @returns {Object}
+ */
+function buildTaskManualOriginFields() {
+	return {
+		isEmailRequest: false,
+		aiGenerated: false,
+		requestSource: "manual",
+		requestStatus: "",
+		creatorType: "member",
+		creatorLabel: "",
+		creatorEmail: "",
+	};
 }
 
 /**
