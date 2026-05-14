@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join – Request Access</title>
+    <link rel="shortcut icon" href="../assets/icon/Capa 1.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/fonts.css" />
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/pages/stakeholder.css" />
+    <script src="../scripts/pages/stakeholder.js" defer></script>
+</head>
+
+<body onload="initStakeholderPage()">
+
+    <!-- ═══════════════════════════════════════════════
+         SCREEN 1 – Welcome / entry choice
+    ════════════════════════════════════════════════ -->
+    <section id="screenWelcome" class="sh-screen sh-welcome-screen" aria-label="Welcome screen">
+        <div class="sh-welcome-card">
+            <img class="sh-welcome-logo" src="../assets/icon/Capa 1.svg" alt="Join Logo" />
+            <h1 class="sh-welcome-title">Welcome to Join</h1>
+            <p class="sh-welcome-subtitle">How would you like to continue?</p>
+
+            <div class="sh-welcome-actions">
+                <button class="sh-btn sh-btn-primary" onclick="showStakeholderScreen()">
+                    Create request
+                </button>
+                <button class="sh-btn sh-btn-ghost" onclick="goToMemberLogin()">
+                    Member log in
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         SCREEN 2 – Stakeholder request form
+    ════════════════════════════════════════════════ -->
+    <section id="screenStakeholder" class="sh-screen sh-content-screen hidden" aria-label="Stakeholder request screen">
+        <header class="sh-header">
+            <a class="sh-logo-link" href="#" onclick="showWelcomeScreen(); return false;" aria-label="Back to welcome">
+                <img class="sh-header-logo" src="../assets/icon/Capa 1.svg" alt="Join Logo" />
+            </a>
+            <div id="shRequestCounter" class="sh-request-counter">
+                <span id="shCounterText">0 of 10 requests used today</span>
+            </div>
+        </header>
+
+        <main class="sh-main">
+            <div class="sh-content-grid">
+                <div class="sh-text-col">
+                    <h2 class="sh-main-heading">
+                        Submit a<br />request<br />to our team.
+                    </h2>
+                    <p class="sh-intro-text">
+                        Have a question, task, or issue for the team? Send us a quick
+                        request and we'll get back to you by email.
+                    </p>
+                    <ul class="sh-feature-list">
+                        <li>Up to <strong>10 requests per day</strong></li>
+                        <li>Response within <strong>1 business day</strong></li>
+                        <li>No account needed</li>
+                    </ul>
+                    <button class="sh-btn sh-btn-primary sh-cta-btn" onclick="submitEmailRequest()">
+                        Create Email Request
+                    </button>
+                </div>
+
+                <div class="sh-illustration-col" aria-hidden="true">
+                    <div class="sh-illustration-card">
+                        <div class="sh-illus-icon-row">
+                            <div class="sh-illus-dot sh-illus-dot--blue"></div>
+                            <div class="sh-illus-dot sh-illus-dot--purple"></div>
+                            <div class="sh-illus-dot sh-illus-dot--teal"></div>
+                        </div>
+                        <div class="sh-illus-bar sh-illus-bar--wide"></div>
+                        <div class="sh-illus-bar sh-illus-bar--medium"></div>
+                        <div class="sh-illus-bar sh-illus-bar--short"></div>
+                        <div class="sh-illus-envelope">
+                            <svg viewBox="0 0 64 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <rect width="64" height="48" rx="6" fill="#E8F4FD"/>
+                                <path d="M4 8h56v32a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8z" fill="#29ABE2" opacity=".18"/>
+                                <path d="M4 8l28 22L60 8" stroke="#29ABE2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <rect x="4" y="8" width="56" height="32" rx="4" stroke="#29ABE2" stroke-width="2"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="sh-footer">
+            <a href="./privacy-policy-external.html" class="sh-footer-link">Privacy Policy</a>
+            <a href="./legal-notice-external.html" class="sh-footer-link">Legal Notice</a>
+        </footer>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         SCREEN 3 – Limit reached
+    ════════════════════════════════════════════════ -->
+    <section id="screenLimitReached" class="sh-screen sh-content-screen hidden" aria-label="Daily limit reached screen">
+        <header class="sh-header">
+            <a class="sh-logo-link" href="#" onclick="showWelcomeScreen(); return false;" aria-label="Back to welcome">
+                <img class="sh-header-logo" src="../assets/icon/Capa 1.svg" alt="Join Logo" />
+            </a>
+            <div id="shRequestCounterLimit" class="sh-request-counter sh-request-counter--full">
+                <span>10 of 10 requests used today</span>
+            </div>
+        </header>
+
+        <main class="sh-main">
+            <div class="sh-content-grid">
+                <div class="sh-text-col">
+                    <h2 class="sh-main-heading">
+                        Daily limit<br />reached.
+                    </h2>
+
+                    <div class="sh-limit-banner" role="alert">
+                        <svg class="sh-limit-banner-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M12 2L2 20h20L12 2z" fill="#FF9800" opacity=".18"/>
+                            <path d="M12 2L2 20h20L12 2z" stroke="#FF9800" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M12 9v5M12 16.5v.5" stroke="#FF9800" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <p class="sh-limit-banner-text">
+                            The daily <strong>10-request limit</strong> has been reached!
+                        </p>
+                    </div>
+
+                    <p class="sh-intro-text">
+                        You've used all 10 requests for today. You can still send an email
+                        directly — it will be received and processed manually by our team.
+                    </p>
+                    <p class="sh-intro-text sh-intro-text--muted">
+                        The daily counter resets at midnight. Automated request processing
+                        resumes tomorrow.
+                    </p>
+
+                    <button class="sh-btn sh-btn-primary sh-cta-btn" onclick="sendDirectEmail()">
+                        Send an email
+                    </button>
+                </div>
+
+                <div class="sh-illustration-col" aria-hidden="true">
+                    <div class="sh-illustration-card sh-illustration-card--limit">
+                        <div class="sh-illus-icon-row">
+                            <div class="sh-illus-dot sh-illus-dot--orange"></div>
+                            <div class="sh-illus-dot sh-illus-dot--red"></div>
+                            <div class="sh-illus-dot sh-illus-dot--grey"></div>
+                        </div>
+                        <div class="sh-illus-bar sh-illus-bar--wide sh-illus-bar--muted"></div>
+                        <div class="sh-illus-bar sh-illus-bar--medium sh-illus-bar--muted"></div>
+                        <div class="sh-illus-bar sh-illus-bar--short sh-illus-bar--muted"></div>
+                        <div class="sh-illus-limit-badge">10 / 10</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="sh-footer">
+            <a href="./privacy-policy-external.html" class="sh-footer-link">Privacy Policy</a>
+            <a href="./legal-notice-external.html" class="sh-footer-link">Legal Notice</a>
+        </footer>
+    </section>
+
+</body>
+</html>
