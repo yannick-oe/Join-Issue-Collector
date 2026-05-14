@@ -105,65 +105,47 @@
     ════════════════════════════════════════════════ -->
     <section id="screenLimitReached" class="sh-screen sh-content-screen hidden" aria-label="Daily limit reached screen">
         <header class="sh-header">
-            <a class="sh-logo-link" href="#" onclick="showWelcomeScreen(); return false;" aria-label="Back to welcome">
-                <img class="sh-header-logo" src="../assets/icon/Capa 1.svg" alt="Join Logo" />
-            </a>
+            <img class="sh-header-logo" src="../assets/icon/Capa 1.svg" alt="Join Logo" />
             <div id="shRequestCounterLimit" class="sh-request-counter sh-request-counter--full">
                 <span>10 of 10 requests used today</span>
             </div>
         </header>
 
         <main class="sh-main">
+            <button class="sh-back-btn" onclick="showWelcomeScreen()" aria-label="Back to welcome">
+                <img class="sh-back-icon" src="../assets/icon/arrow_left.svg" alt="" aria-hidden="true" />
+            </button>
+            <h2 class="sh-page-heading">Welcome</h2>
             <div class="sh-content-grid">
                 <div class="sh-text-col">
-                    <h2 class="sh-main-heading">
-                        Daily limit<br />reached.
-                    </h2>
-
                     <div class="sh-limit-banner" role="alert">
-                        <svg class="sh-limit-banner-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path d="M12 2L2 20h20L12 2z" fill="#FF9800" opacity=".18"/>
-                            <path d="M12 2L2 20h20L12 2z" stroke="#FF9800" stroke-width="1.8" stroke-linejoin="round"/>
-                            <path d="M12 9v5M12 16.5v.5" stroke="#FF9800" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
                         <p class="sh-limit-banner-text">
-                            The daily <strong>10-request limit</strong> has been reached!
+                            The daily 10-request limit has been reached!
                         </p>
                     </div>
 
                     <p class="sh-intro-text">
-                        You've used all 10 requests for today. You can still send an email
-                        directly — it will be received and processed manually by our team.
-                    </p>
-                    <p class="sh-intro-text sh-intro-text--muted">
-                        The daily counter resets at midnight. Automated request processing
-                        resumes tomorrow.
+                        Need more? No worries — you can still send emails, but
+                        our team will review them manually instead of using AI
+                        to create tickets.
                     </p>
 
                     <button class="sh-btn sh-btn-primary sh-cta-btn" onclick="sendDirectEmail()">
-                        Send an email
+                        Send an email ✓
                     </button>
                 </div>
 
-                <div class="sh-illustration-col" aria-hidden="true">
-                    <div class="sh-illustration-card sh-illustration-card--limit">
-                        <div class="sh-illus-icon-row">
-                            <div class="sh-illus-dot sh-illus-dot--orange"></div>
-                            <div class="sh-illus-dot sh-illus-dot--red"></div>
-                            <div class="sh-illus-dot sh-illus-dot--grey"></div>
-                        </div>
-                        <div class="sh-illus-bar sh-illus-bar--wide sh-illus-bar--muted"></div>
-                        <div class="sh-illus-bar sh-illus-bar--medium sh-illus-bar--muted"></div>
-                        <div class="sh-illus-bar sh-illus-bar--short sh-illus-bar--muted"></div>
-                        <div class="sh-illus-limit-badge">10 / 10</div>
-                    </div>
+                <div class="sh-illustration-col">
+                    <img class="sh-illustration-img"
+                         src="../assets/icon/requestsent.png"
+                         alt="Person at a kanban board — request sent" />
                 </div>
             </div>
         </main>
 
         <footer class="sh-footer">
             <a href="./privacy-policy-external.html" class="sh-footer-link">Privacy Policy</a>
-            <a href="./legal-notice-external.html" class="sh-footer-link">Legal Notice</a>
+            <a href="./legal-notice-external.html" class="sh-footer-link">Legal notice</a>
         </footer>
     </section>
 
