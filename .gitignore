@@ -1,0 +1,60 @@
+# ─────────────────────────────────────────────
+# macOS
+# ─────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ─────────────────────────────────────────────
+# Environment files
+# ─────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ─────────────────────────────────────────────
+# Firebase
+# ─────────────────────────────────────────────
+firebase-debug.log
+.firebaserc.local
+.firebase/
+
+# ─────────────────────────────────────────────
+# n8n
+# ─────────────────────────────────────────────
+n8n/.env
+n8n/.n8n/
+n8n/credentials/
+n8n/backups/
+
+# ─────────────────────────────────────────────
+# Logs
+# ─────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+
+# ─────────────────────────────────────────────
+# VS Code
+# Keep extensions.json (shared recommendations).
+# Ignore user-specific workspace state.
+# ─────────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# ─────────────────────────────────────────────
+# Node / package managers
+# ─────────────────────────────────────────────
+node_modules/
+package-lock.json
+yarn.lock
+
+# ─────────────────────────────────────────────
+# Build / temporary output
+# ─────────────────────────────────────────────
+dist/
+build/
+.tmp/
+.cache/
