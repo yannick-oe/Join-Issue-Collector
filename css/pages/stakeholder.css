@@ -180,19 +180,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 80px;
-    background: #ffffff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.sh-logo-link {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
+    padding: 20px 60px;
 }
 
 .sh-header-logo {
@@ -200,46 +188,55 @@ body {
     height: auto;
 }
 
-/* ── Request counter ──────────────────────────────────── */
-.sh-request-counter {
+.sh-back-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: #eaf5fb;
-    color: #2a3647;
-    border: 1.5px solid #29abe2;
-    border-radius: 20px;
-    padding: 6px 18px;
-    font-size: 14px;
-    font-weight: 500;
+    align-self: flex-start;
+    margin-bottom: 20px;
+    opacity: 0.55;
+    transition: opacity 120ms ease;
 }
 
-.sh-request-counter::before {
-    content: "";
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #29abe2;
-    flex-shrink: 0;
+.sh-back-btn:hover {
+    opacity: 1;
+}
+
+.sh-back-icon {
+    width: 20px;
+    height: auto;
+}
+
+/* ── Request counter ──────────────────────────────────── */
+.sh-request-counter {
+    font-size: 14px;
+    font-weight: 500;
+    color: #29abe2;
 }
 
 .sh-request-counter--full {
-    background: #fff4e5;
-    color: #b54b00;
-    border-color: #ff9800;
-}
-
-.sh-request-counter--full::before {
-    background: #ff9800;
+    color: #ff9800;
 }
 
 /* ── Main content ─────────────────────────────────────── */
 .sh-main {
     flex: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    padding: 60px 80px;
+    padding: 40px 80px 0;
+}
+
+.sh-page-heading {
+    font-size: 56px;
+    font-weight: 700;
+    color: #2a3647;
+    text-align: center;
+    margin: 0 0 36px 0;
+    width: 100%;
 }
 
 .sh-content-grid {
@@ -282,6 +279,22 @@ body {
     color: #a0aab4;
 }
 
+.sh-text-lead {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2a3647;
+    line-height: 1.45;
+    margin: 0;
+}
+
+.sh-illustration-img {
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
 .sh-feature-list {
     list-style: none;
     padding: 0;
@@ -310,10 +323,20 @@ body {
 }
 
 .sh-cta-btn {
+    background: #29abe2;
+    color: #ffffff;
     margin-top: 8px;
     min-width: 220px;
-    height: 56px;
-    font-size: 17px;
+    height: 52px;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 0 28px;
+    border-radius: 8px;
+}
+
+.sh-cta-btn:hover {
+    filter: brightness(1.08);
+    transform: translateY(-2px);
 }
 
 /* ── Illustration column ──────────────────────────────── */
@@ -426,9 +449,8 @@ body {
     display: flex;
     justify-content: center;
     gap: 40px;
-    padding: 20px 80px;
-    background: #ffffff;
-    border-top: 1px solid #e8ecf0;
+    padding: 24px 80px;
+    background: transparent;
 }
 
 .sh-footer-link {
@@ -453,7 +475,12 @@ body {
     }
 
     .sh-main {
-        padding: 40px 32px;
+        padding: 32px 32px 0;
+    }
+
+    .sh-page-heading {
+        font-size: 42px;
+        margin-bottom: 28px;
     }
 
     .sh-content-grid {
@@ -470,8 +497,9 @@ body {
         max-width: 380px;
     }
 
-    .sh-main-heading {
-        font-size: 36px;
+    .sh-illustration-img {
+        max-width: 280px;
+        margin: 0 auto;
     }
 
     .sh-footer {
@@ -497,7 +525,7 @@ body {
     }
 
     .sh-header {
-        padding: 14px 20px;
+        padding: 16px 20px 12px;
     }
 
     .sh-header-logo {
@@ -506,20 +534,23 @@ body {
 
     .sh-request-counter {
         font-size: 12px;
-        padding: 5px 12px;
     }
 
     .sh-main {
-        padding: 28px 20px;
-        align-items: flex-start;
+        padding: 24px 20px 0;
+    }
+
+    .sh-page-heading {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+
+    .sh-text-lead {
+        font-size: 17px;
     }
 
     .sh-content-grid {
         gap: 28px;
-    }
-
-    .sh-main-heading {
-        font-size: 30px;
     }
 
     .sh-intro-text {

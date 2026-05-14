@@ -55,60 +55,48 @@
     ════════════════════════════════════════════════ -->
     <section id="screenStakeholder" class="sh-screen sh-content-screen hidden" aria-label="Stakeholder request screen">
         <header class="sh-header">
-            <a class="sh-logo-link" href="#" onclick="showWelcomeScreen(); return false;" aria-label="Back to welcome">
-                <img class="sh-header-logo" src="../assets/icon/Capa 1.svg" alt="Join Logo" />
-            </a>
+            <img class="sh-header-logo" src="../assets/icon/Capa 1.svg" alt="Join Logo" />
             <div id="shRequestCounter" class="sh-request-counter">
                 <span id="shCounterText">0 of 10 requests used today</span>
             </div>
         </header>
 
         <main class="sh-main">
+            <button class="sh-back-btn" onclick="showWelcomeScreen()" aria-label="Back to welcome">
+                <img class="sh-back-icon" src="../assets/icon/arrow_left.svg" alt="" aria-hidden="true" />
+            </button>
+            <h2 class="sh-page-heading">Welcome</h2>
             <div class="sh-content-grid">
                 <div class="sh-text-col">
-                    <h2 class="sh-main-heading">
-                        Submit a<br />request<br />to our team.
-                    </h2>
-                    <p class="sh-intro-text">
-                        Have a question, task, or issue for the team? Send us a quick
-                        request and we'll get back to you by email.
+                    <p class="sh-text-lead">
+                        Easily create a ticket by sending an email — no extra steps needed.
                     </p>
-                    <ul class="sh-feature-list">
-                        <li>Up to <strong>10 requests per day</strong></li>
-                        <li>Response within <strong>1 business day</strong></li>
-                        <li>No account needed</li>
-                    </ul>
+                    <p class="sh-intro-text">
+                        On this platform, you can submit your feature requests via email.
+                        Our AI system will automatically generate a ticket with a deadline
+                        and priority level.
+                    </p>
+                    <p class="sh-intro-text">
+                        A total of 10 requests can be created per day. After this limit,
+                        emails can still be sent, but they will be manually reviewed by
+                        our team instead of generating AI tickets.
+                    </p>
                     <button class="sh-btn sh-btn-primary sh-cta-btn" onclick="submitEmailRequest()">
-                        Create Email Request
+                        Create Email Request ✓
                     </button>
                 </div>
 
-                <div class="sh-illustration-col" aria-hidden="true">
-                    <div class="sh-illustration-card">
-                        <div class="sh-illus-icon-row">
-                            <div class="sh-illus-dot sh-illus-dot--blue"></div>
-                            <div class="sh-illus-dot sh-illus-dot--purple"></div>
-                            <div class="sh-illus-dot sh-illus-dot--teal"></div>
-                        </div>
-                        <div class="sh-illus-bar sh-illus-bar--wide"></div>
-                        <div class="sh-illus-bar sh-illus-bar--medium"></div>
-                        <div class="sh-illus-bar sh-illus-bar--short"></div>
-                        <div class="sh-illus-envelope">
-                            <svg viewBox="0 0 64 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <rect width="64" height="48" rx="6" fill="#E8F4FD"/>
-                                <path d="M4 8h56v32a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8z" fill="#29ABE2" opacity=".18"/>
-                                <path d="M4 8l28 22L60 8" stroke="#29ABE2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <rect x="4" y="8" width="56" height="32" rx="4" stroke="#29ABE2" stroke-width="2"/>
-                            </svg>
-                        </div>
-                    </div>
+                <div class="sh-illustration-col">
+                    <img class="sh-illustration-img"
+                         src="../assets/icon/request.png"
+                         alt="Person creating a request at a kanban board" />
                 </div>
             </div>
         </main>
 
         <footer class="sh-footer">
             <a href="./privacy-policy-external.html" class="sh-footer-link">Privacy Policy</a>
-            <a href="./legal-notice-external.html" class="sh-footer-link">Legal Notice</a>
+            <a href="./legal-notice-external.html" class="sh-footer-link">Legal notice</a>
         </footer>
     </section>
 
