@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Summary</title>
+    <link rel="shortcut icon" href="../assets/icon/Capa 1.svg" type="image/x-icon">
+
+    <link rel="stylesheet" href="../css/fonts.css" />
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/pages/summary.css" />
+    <link rel="stylesheet" href="../css/responsive.css" />
+    <script src="../scripts/storage.js" defer></script>
+    <script src="../scripts/pages/header.js"></script>
+    <script src="../scripts/pages/summary.js" defer></script>
+</head>
+
+<body onload="initSummaryPage()" onclick="closeMenu()">
+    <header>
+        <div class="responsive-header-line">
+            <p class="header-line">Kanban Project Management Tool</p>
+            <div class="button-icon"></div>
+        </div>
+        <div class="header-right">
+            <a href="./help.html">
+                <img class="header-help-icon" src="../assets/icon/help.svg" alt="Help-Icon" />
+            </a>
+            <div class="dropdown">
+                <button id="myBtn" class="header-user-circle dropbtn"
+                    onclick="openMenu(); event.stopPropagation()"></button>
+                <div id="myDropdown" class="dropdown-content d_none">
+                    <a href="./help.html" class="show-responsive text-align-center">Help</a>
+                    <a href="./legal-notice.html" class="text-align-center">Legal Notice</a>
+                    <a href="./privacy-policy.html" class="text-align-center">Privacy Policy</a>
+                    <a href="/index.html" onclick="return logOutUser(event)" class="text-align-center">Log out</a>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    </header>
+
+    <aside>
+        <div>
+            <img class="logo-icon" src="../assets/icon/Join logo vector.svg" alt="Logo" />
+        </div>
+
+        <section class="sidebar-top">
+            <table class="sidebar-top">
+                <tr class="menu">
+                    <td>
+                        <a href="./summary.html" class="is-active">
+                            <img src="../assets/icon/Icons.svg" class="summary-icon icon" alt="Summary-Icon" />
+                            <span>Summary</span>
+                        </a>
+                    </td>
+                </tr>
+                <tr class="menu">
+                    <td>
+                        <a href="./add-task.html">
+                            <img src="../assets/icon/edit_square.svg" class="task-icon icon" alt="Task-Icon" />
+                            <span>Add Task</span>
+                        </a>
+                    </td>
+                </tr>
+                <tr class="menu">
+                    <td>
+                        <a href="./board.html">
+                            <img src="../assets/icon/vectors.svg" class="board-icon icon" alt="Board-Icon" />
+                            <span>Board</span>
+                        </a>
+                    </td>
+                </tr>
+                <tr class="menu">
+                    <td>
+                        <a href="./contacts.html">
+                            <img src="../assets/icon/perm_contact_calendar.svg" class="contacts-icon icon"
+                                alt="Contacts-Icon" />
+                            <span>Contacts</span>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="sidebar-bottom">
+            <table>
+                <tr class="menu-bottom padding-bottom">
+                    <td><a href="./privacy-policy.html"><span>Privacy Policy</span></a></td>
+                </tr>
+                <tr class="menu-bottom">
+                    <td><a href="./legal-notice.html"><span>Legal Notice</span></a></td>
+                </tr>
+            </table>
+        </section>
+    </aside>
+
+    <main class="summary-main">
+        <section class="content-limit hight">
+            <section class="summary-first-line">
+                <h1>Join 360</h1>
+                <div class="seperator"></div>
+                <p class="font-size summary-first">Key Metrics at a Glance</p>
+                <div class="seperator-repsonsive">
+                    <div class="seperator-two"></div>
+                </div>
+            </section>
+
+            <section class="sumary-main-layout">
+                <section class="summary-box">
+                    <section class="summary-second-line">
+                        <section>
+                            <div class="sumary-second edit size center gap15" onclick="openBoardPage()">
+                                <div class="bc-b circle">
+                                    <img src="../assets/icon/edit.svg" class="icon-size" alt="Edit-Icon">
+                                </div>
+                                <div class="center fd-c">
+                                    <p id="summaryTodoCount" class="font-size64 text-align">0</p>
+                                    <p class="text-align font-size16">To-do</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section>
+                            <div class="sumary-second vector center gap15 size" onclick="openBoardPage()">
+                                <div class="bc-b circle">
+                                    <img src="../assets/icon/Vector.svg" class="icon-size" alt="Done-Icon">
+                                </div>
+                                <div>
+                                    <p id="summaryDoneCount" class="font-size64 text-align">0</p>
+                                    <p class="text-align font-size16">Done</p>
+                                </div>
+                            </div>
+                        </section>
+                    </section>
+
+                    <section class="sumary-third-line" onclick="openBoardPage()">
+                        <div class="center gap15">
+                            <div class="circlee center">
+                                <img src="../assets/icon/high-prio.svg" class="icon-size" alt="Urgent-Icon">
+                            </div>
+
+                            <div>
+                                <p id="summaryUrgentCount" class="font-size64 text-align">0</p>
+                                <p class="text-align font-size16">Urgent</p>
+                            </div>
+                        </div>
+                        <div class="seperator-line"></div>
+                        <div>
+                            <p id="summaryUpcomingDate" class="text-align padding-bottom10">No deadline</p>
+                            <p class="text-align">Upcoming Deadline</p>
+                        </div>
+                    </section>
+
+                    <section class="center gap20">
+                        <div class="box-size" onclick="openBoardPage()">
+                            <p id="summaryTasksInBoard" class="text-align font-size64">0</p>
+                            <p class="font-size20 text-align">Tasks in Board</p>
+                        </div>
+                        <div class="box-size font-size20" onclick="openBoardPage()">
+                            <p id="summaryInProgressCount" class="text-align font-size64">0</p>
+                            <p class="font-size20 text-align">Tasks In Progress</p>
+                        </div>
+                        <div class="box-size font-size20" onclick="openBoardPage()">
+                            <p id="summaryAwaitingFeedbackCount" class="text-align font-size64">0</p>
+                            <p class="font-size20 text-align">Awaiting Feedback</p>
+                        </div>
+                    </section>
+                </section>
+                <section class="greeting">
+                    <h2 id="summaryGreetingTitle">Good morning</h2>
+                    <p id="summaryGreetingName" class="greeting-user-name hidden"></p>
+                </section>
+            </section>
+        </section>
+    </main>
+
+    <footer>
+        <section class="responsive-footer">
+            <a href="./summary.html" class="is-active">
+                <img src="../assets/icon/Icons.svg" class="responsive-task-icon" alt="Summary-Icon" />
+                <span class="responsive-menu">Summary</span>
+            </a>
+            <a href="./add-task.html">
+                <img src="../assets/icon/edit_square.svg" class="responsive-task-icon" alt="Task-Icon" />
+                <span class="responsive-menu">Add Task</span>
+            </a>
+            <a href="./board.html">
+                <img src="../assets/icon/vectors.svg" class="responsive-task-icon" alt="Board-Icon" />
+                <span class="responsive-menu">Board</span>
+            </a>
+            <a href="./contacts.html">
+                <img src="../assets/icon/perm_contact_calendar.svg" class="responsive-task-icon" alt="Contacts-Icon" />
+                <span class="responsive-menu">Contacts</span>
+            </a>
+        </section>
+    </footer>
+
+
+</body>
+
+</html>

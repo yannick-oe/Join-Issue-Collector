@@ -1,0 +1,373 @@
+* {
+    text-decoration: none;
+}
+
+body {
+    background: rgb(246, 247, 248);
+    margin: 0;
+    height: 100vh;
+}
+
+main {
+    height: 100vh;
+}
+
+.join_logo {
+    width: 100px;
+    height: 121px;
+    margin-top: 60px;
+}
+
+.header_right {
+    display: flex;
+    align-items: baseline;
+    gap: 35px;
+    margin-top: 67px;
+}
+
+.header_content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content {
+    width: 100%;
+    max-width: clamp(960px, 80%, 1440px);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.content_wrapper {
+    margin: 0;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    font-size: 61px;
+    font-weight: bold;
+    font-weight: 700;
+}
+
+.Sign_btn {
+    padding: 15px 16px 15px 16px;
+    width: 91px;
+}
+
+.btn {
+    height: 49px;
+    width: 91px;
+    background-color: rgb(42, 54, 71);
+    gap: 10px;
+    border-radius: 8px;
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    border: 0;
+    font-size: 16px;
+    cursor: pointer;
+
+}
+
+.guest_btn {
+    height: 49px;
+    background-color: rgba(255, 255, 255, 1);
+    gap: 10px;
+    border-radius: 8px;
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: rgba(42, 54, 71, 1);
+    border: 1px solid #D1D1D1;
+    font-size: 21px;
+    font-weight: 700;
+    font-weight: bold;
+    padding: 15px 24px 15px 24px;
+    cursor: pointer;
+}
+
+.login_btn {
+    padding: 15px 24px 15px 24px;
+    width: 110px;
+}
+
+.btn_group {
+    display: flex;
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+}
+
+.no_user_content {
+    display: none;
+}
+
+.no_user {
+    font-size: 24px;
+}
+
+.login {
+    box-shadow: 0 0 14px 3px rgba(0, 0, 0, 0.04);
+    height: 500px;
+    width: 700px;
+    border-radius: 30px;
+    margin-top: 0;
+    padding-top: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    background-color: white;
+}
+
+.login_form {
+    height: 152px;
+    width: 422px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.field {
+    height: 48px;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    padding: 12px 21px 12px 21px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+}
+
+.field:focus-within {
+    border-color: #29abe2;
+    box-shadow: 0 0 0 1px rgba(41, 171, 226, 0.22);
+}
+
+input {
+    width: 380px;
+    height: 24px;
+    border: none;
+    padding-right: 36px;
+    box-sizing: border-box;
+}
+
+input:focus {
+    outline: none;
+}
+
+.input_icon {
+    position: absolute;
+    right: 21px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.input_icon_button {
+    position: absolute;
+    right: 21px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    cursor: pointer;
+}
+
+.input_icon_button:disabled {
+    cursor: default;
+}
+
+.input_icon_button .input_icon {
+    position: static;
+    transform: none;
+}
+
+.footer_content {
+    display: flex;
+    justify-content: center;
+    padding: 8px;
+    gap: 16px;
+    margin-top: 49px;
+
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding-bottom: 25px;
+}
+
+.footer_content a {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(168, 168, 168, 1);
+}
+
+.sign_up {
+    box-shadow: 0 0 14px 3px rgba(0, 0, 0, 0.04);
+    height: 580px;
+    width: 598px;
+    border-radius: 30px;
+    margin-top: 20px;
+    padding-top: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    background-color: white;
+}
+
+.police {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+.police a {
+    color: rgba(41, 171, 226, 1);
+    font-size: 16px;
+}
+
+.police p {
+    font-size: 16px;
+}
+
+.checkbox {
+    height: 24px;
+    width: 24px;
+    cursor: pointer;
+}
+
+.terms {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+}
+
+.Sign_up_btn {
+    display: flex;
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+}
+
+.Sign:disabled {
+    background: #a8a8a8;
+    color: #ffffff;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.arrow {
+    left: 88px;
+    position: absolute;
+    left: 65px;
+    position: absolute;
+    top: 110px;
+    background: transparent;
+    border: none;
+    padding: 4px;
+    border-radius: 50%;
+    transition: background-color 120ms ease, box-shadow 120ms ease;
+    cursor: pointer;
+
+}
+
+.underline {
+    background-color: rgba(41, 171, 226, 1);
+    height: 3px;
+    width: 150px;
+    margin-top: -20px;
+    margin-bottom: 30px;
+}
+
+.form_message {
+    padding: 0;
+    border-radius: 0;
+    font-size: 14px;
+    border: none;
+    box-sizing: border-box;
+    min-height: 18px;
+    line-height: 1.2;
+    text-align: left;
+    visibility: hidden;
+}
+
+.form_message.success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #86efac;
+    visibility: visible;
+}
+
+.form_message.error {
+    background: transparent;
+    color: #e63946;
+    border: none;
+    visibility: visible;
+}
+
+.sign_up .terms {
+    margin-top: 8px;
+}
+
+.btn_group.success_active {
+    margin-top: -25px;
+}
+
+.success-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2a3647;
+    color: #ffffff;
+    padding: 20px 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    animation: slide-up 0.3s ease-out;
+}
+
+.success-toast-text {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
