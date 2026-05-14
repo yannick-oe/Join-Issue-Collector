@@ -96,21 +96,22 @@ function buildUserInitials(name) {
 }
 
 /**
- * Logs out current user and redirects to login.
+ * Logs out current user and redirects to the stakeholder welcome screen.
  * @param {Event} event
  */
 function logOutUser(event) {
     if (event) event.preventDefault();
     clearSessionUser();
-    window.location.href = "/index.html";
+    window.location.href = "/pages/stakeholder.html?view=welcome";
     return false;
 }
 
 /**
- * Redirects to the login page.
+ * Redirects to the login page (used when an unauthenticated user tries
+ * to access a protected page — bypasses the stakeholder screen).
  */
 function redirectToLoginPage() {
-    window.location.href = "/index.html";
+    window.location.href = "/index.html?mode=login";
 }
 
 /**

@@ -1,12 +1,36 @@
 // #region Init
 /**
  * Initializes login page state.
+ * If the user has an active session, redirects to the summary page.
+ * If no session and "?mode=login" is not present, redirects to the
+ * stakeholder welcome screen after the intro animation completes.
  */
 function initLoginPage() {
   resetLoginUi();
   runLoginLogoIntro();
-  if (!hasActiveSession()) return;
-  window.location.href = "./pages/summary.html";
+  if (hasActiveSession()) {
+    window.location.href = "./pages/summary.html";
+    return;
+  }
+  if (!isLoginModeRequested()) {
+    setTimeout(redirectToStakeholderWelcome, 620);
+  }
+}
+
+/**
+ * Returns true when the URL contains "?mode=login",
+ * meaning the user explicitly wants the login form.
+ * @returns {boolean}
+ */
+function isLoginModeRequested() {
+  return new URLSearchParams(window.location.search).get("mode") === "login";
+}
+
+/**
+ * Navigates to the public stakeholder welcome screen.
+ */
+function redirectToStakeholderWelcome() {
+  window.location.href = "./pages/stakeholder.html?view=welcome";
 }
 
 /**

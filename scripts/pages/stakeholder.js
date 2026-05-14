@@ -88,10 +88,12 @@ function showLimitReachedScreen() {
 }
 
 /**
- * Navigates the user to the main Join login page.
+ * Navigates the user to the main Join member login page.
+ * The "?mode=login" param tells index.html to show the login form
+ * directly, skipping the stakeholder welcome redirect.
  */
 function goToMemberLogin() {
-    window.location.href = "../index.html";
+    window.location.href = "../index.html?mode=login";
 }
 
 // #endregion
