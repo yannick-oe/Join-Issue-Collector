@@ -17,21 +17,23 @@ const SH_DAILY_LIMIT = 10;
 
 /**
  * Contact email address for all stakeholder email requests.
- * Replace with the real team inbox before going live.
  */
-const SH_TEAM_EMAIL = "team@join-app.example.com";
+const SH_TEAM_EMAIL = "oetelshoven.dev@gmail.com";
 
 /**
  * Subject line shared by all stakeholder request emails.
- * Centralised here so the n8n parser rule targets a single string.
+ * The [JOIN-ISSUE-COLLECTOR] prefix is the stable n8n filter token.
  */
-const SH_REQUEST_SUBJECT = "Join Feature Request";
+const SH_REQUEST_SUBJECT = "[JOIN-ISSUE-COLLECTOR] New Stakeholder Request";
 
 /**
  * Pre-filled body template shown in the user's email client.
- * Guides the stakeholder to provide the information n8n needs.
+ * Machine-readable header lines let n8n identify and parse the request.
  */
 const SH_REQUEST_BODY = [
+    "JOIN_REQUEST_SOURCE: stakeholder-page",
+    "JOIN_REQUEST_VERSION: 1",
+    "",
     "Hi Join team,",
     "",
     "I would like to submit the following request:",
@@ -151,7 +153,8 @@ function renderLimitReachedScreen() {
 
 /**
  * Builds a mailto: href using the centralised address, subject and body template.
- * Swap this function body for an n8n webhook POST when the automation is ready.
+ *
+ * TODO: Replace mailto with n8n webhook request when direct submission is enabled.
  *
  * @returns {string} Fully encoded mailto: URL.
  */
@@ -164,24 +167,10 @@ function buildRequestMailtoHref() {
 /**
  * Handles the "Create Email Request" CTA.
  * Opens the user's email client with the shared request template.
- *
- * TODO: Replace window.location.href assignment with a real n8n webhook
- *       POST call here once the automation workflow is live.
+ * Counter increment is intentionally omitted — the real daily limit
+ * is enforced by n8n after the email is received.
  */
 function submitEmailRequest() {
-    if (shRequestsUsedToday >= SH_DAILY_LIMIT) {
-        showLimitReachedScreen();
-        return;
-    }
-
-    shRequestsUsedToday += 1;
-
-    if (shRequestsUsedToday >= SH_DAILY_LIMIT) {
-        showLimitReachedScreen();
-        return;
-    }
-
-    updateCounterBadge("shCounterText", shRequestsUsedToday, SH_DAILY_LIMIT);
     window.location.href = buildRequestMailtoHref();
 }
 
