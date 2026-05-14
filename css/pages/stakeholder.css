@@ -3,6 +3,12 @@
    Scope: .sh-* prefix — no rules bleed into the main app.
    ═══════════════════════════════════════════════════════════ */
 
+/* Prevent any horizontal overflow on the stakeholder page */
+body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
 /* ── Reset & base ─────────────────────────────────────── */
 .sh-screen *,
 .sh-screen *::before,
@@ -19,53 +25,101 @@
 
 /* ── SCREEN 1 – Welcome ───────────────────────────────── */
 .sh-welcome-screen {
-    background-color: #2a3647;
+    background-color: #1e2b3c;
     justify-content: center;
     align-items: center;
     padding: 24px;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .sh-welcome-card {
     background: #ffffff;
-    border-radius: 30px;
-    padding: 56px 64px;
-    max-width: 480px;
-    width: 100%;
+    border-radius: 20px;
+    padding: 48px 56px 52px;
+    width: 780px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
-}
-
-.sh-welcome-logo {
-    width: 72px;
-    height: auto;
-    margin-bottom: 24px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.22);
 }
 
 .sh-welcome-title {
-    font-size: 32px;
+    font-size: 34px;
     font-weight: 700;
     color: #2a3647;
-    margin: 0 0 8px 0;
+    margin: 0 0 12px 0;
     text-align: center;
+}
+
+.sh-welcome-divider {
+    width: 120px;
+    height: 2px;
+    border-radius: 2px;
+    background: #29abe2;
+    margin-bottom: 20px;
+    flex-shrink: 0;
 }
 
 .sh-welcome-subtitle {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 400;
     color: #6e7d91;
-    margin: 0 0 40px 0;
+    margin: 0 0 36px 0;
     text-align: center;
+    line-height: 1.55;
+    max-width: 380px;
 }
 
-.sh-welcome-actions {
+/* ── Two-column role layout ───────────────────────────── */
+.sh-welcome-roles {
     display: flex;
-    flex-direction: column;
-    gap: 14px;
+    gap: 40px;
+    align-items: flex-start;
     width: 100%;
 }
+
+.sh-role-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sh-role-label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #2a3647;
+}
+
+.sh-role-icon {
+    width: 22px;
+    height: auto;
+    flex-shrink: 0;
+}
+
+/* Primary button is blue on the welcome card only */
+.sh-welcome-card .sh-btn-primary {
+    background: #29abe2;
+    color: #ffffff;
+    width: 100%;
+}
+
+.sh-welcome-card .sh-btn-primary:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+}
+
+.sh-welcome-card .sh-btn-ghost {
+    width: 100%;
+    border-color: #2a3647;
+}
+
 
 /* ── Shared buttons ───────────────────────────────────── */
 .sh-btn {
@@ -429,12 +483,17 @@
 /* Mobile – ≤ 560px */
 @media (max-width: 560px) {
     .sh-welcome-card {
-        padding: 40px 28px;
-        border-radius: 24px;
+        padding: 36px 24px 40px;
+        border-radius: 16px;
     }
 
     .sh-welcome-title {
-        font-size: 26px;
+        font-size: 28px;
+    }
+
+    .sh-welcome-roles {
+        flex-direction: column;
+        gap: 24px;
     }
 
     .sh-header {

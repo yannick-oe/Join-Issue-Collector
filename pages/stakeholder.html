@@ -19,17 +19,33 @@
     ════════════════════════════════════════════════ -->
     <section id="screenWelcome" class="sh-screen sh-welcome-screen" aria-label="Welcome screen">
         <div class="sh-welcome-card">
-            <img class="sh-welcome-logo" src="../assets/icon/Capa 1.svg" alt="Join Logo" />
-            <h1 class="sh-welcome-title">Welcome to Join</h1>
-            <p class="sh-welcome-subtitle">How would you like to continue?</p>
+            <h1 class="sh-welcome-title">Welcome</h1>
+            <div class="sh-welcome-divider" aria-hidden="true"></div>
+            <p class="sh-welcome-subtitle">
+                Pick the option that suits your role: create a request as a
+                stakeholder or log in if you're part of the team.
+            </p>
 
-            <div class="sh-welcome-actions">
-                <button class="sh-btn sh-btn-primary" onclick="showStakeholderScreen()">
-                    Create request
-                </button>
-                <button class="sh-btn sh-btn-ghost" onclick="goToMemberLogin()">
-                    Member log in
-                </button>
+            <div class="sh-welcome-roles">
+                <div class="sh-role-block">
+                    <div class="sh-role-label">
+                        <img class="sh-role-icon" src="../assets/icon/stakeholder.svg" alt="" aria-hidden="true" />
+                        <span>Are you a stakeholder?</span>
+                    </div>
+                    <button class="sh-btn sh-btn-primary" onclick="showStakeholderScreen()">
+                        Create request
+                    </button>
+                </div>
+
+                <div class="sh-role-block">
+                    <div class="sh-role-label">
+                        <img class="sh-role-icon" src="../assets/icon/teammember.svg" alt="" aria-hidden="true" />
+                        <span>Are you a team member?</span>
+                    </div>
+                    <button class="sh-btn sh-btn-ghost" onclick="goToMemberLogin()">
+                        Member log in
+                    </button>
+                </div>
             </div>
         </div>
     </section>
