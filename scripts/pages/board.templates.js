@@ -85,7 +85,7 @@ function getBoardEmptyStateTemplate(viewModel) {
 // #region Detail templates
 /**
  * Returns board detail overlay template.
- * @param {{categoryClass:string,categoryLabel:string,title:string,description:string,dueDateLabel:string,priorityLabel:string,priorityIcon:string,assigneesHtml:string,subtasksHtml:string,taskId:string}} viewModel
+ * @param {{categoryClass:string,categoryLabel:string,title:string,description:string,dueDateLabel:string,priorityLabel:string,priorityIcon:string,assigneesHtml:string,subtasksHtml:string,aiBadgeHtml:string,creatorHtml:string,taskId:string}} viewModel
  */
 function getBoardTaskDetailTemplate(viewModel) {
 	return `
@@ -97,12 +97,15 @@ function getBoardTaskDetailTemplate(viewModel) {
 
 /**
  * Returns detail header template.
- * @param {{categoryClass:string,categoryLabel:string}} viewModel
+ * @param {{categoryClass:string,categoryLabel:string,aiBadgeHtml:string}} viewModel
  */
 function getBoardTaskDetailHeaderTemplate(viewModel) {
 	return `
 		<div class="board-task-detail-header">
-			<p class="board-card-category ${viewModel.categoryClass}">${viewModel.categoryLabel}</p>
+			<div class="board-detail-header-left">
+				<p class="board-card-category ${viewModel.categoryClass}">${viewModel.categoryLabel}</p>
+				${viewModel.aiBadgeHtml || ""}
+			</div>
 			<button class="board-overlay-close" type="button" onclick="closeBoardTaskDetailOverlay()">×</button>
 		</div>
 	`;
@@ -110,7 +113,7 @@ function getBoardTaskDetailHeaderTemplate(viewModel) {
 
 /**
  * Returns detail body template.
- * @param {{title:string,description:string,dueDateLabel:string,priorityLabel:string,priorityIcon:string,assigneesHtml:string,subtasksHtml:string}} viewModel
+ * @param {{title:string,description:string,dueDateLabel:string,priorityLabel:string,priorityIcon:string,creatorHtml:string,assigneesHtml:string,subtasksHtml:string}} viewModel
  */
 function getBoardTaskDetailBodyTemplate(viewModel) {
 	return `
@@ -118,8 +121,70 @@ function getBoardTaskDetailBodyTemplate(viewModel) {
 		<p class="board-task-detail-description">${viewModel.description}</p>
 		<div class="board-task-detail-row"><span>Due date:</span><p>${viewModel.dueDateLabel}</p></div>
 		<div class="board-task-detail-row"><span>Priority:</span><p>${viewModel.priorityLabel} <img src="${viewModel.priorityIcon}" alt="${viewModel.priorityLabel}" /></p></div>
+		${viewModel.creatorHtml || ""}
 		<div class="board-task-detail-section"><h4>Assigned To:</h4><div class="board-task-detail-assignees">${viewModel.assigneesHtml}</div></div>
 		<div class="board-task-detail-section"><h4>Subtasks:</h4><div class="board-task-detail-subtasks">${viewModel.subtasksHtml}</div></div>
+	`;
+}
+
+/**
+ * Returns AI-generated badge template.
+ * @returns {string}
+ */
+function getBoardTaskDetailAiBadgeTemplate() {
+	return `
+		<div class="board-ai-badge">
+			<img src="../assets/icon/wand_stars.svg" alt="" aria-hidden="true" />
+			<span>AI-generated ticket</span>
+		</div>
+	`;
+}
+
+/**
+ * Returns member creator row template.
+ * @param {{name:string}} viewModel
+ * @returns {string}
+ */
+function getBoardTaskDetailMemberCreatorTemplate(viewModel) {
+	return `
+		<div class="board-task-detail-row">
+			<span>Creator:</span>
+			<div class="board-creator-row">
+				<div class="board-creator-tag board-creator-tag--member">
+					<img src="../assets/icon/teammember.svg" alt="" aria-hidden="true" />
+					<span>Member</span>
+				</div>
+				<span class="board-creator-name">${viewModel.name}</span>
+				<div class="board-creator-action">
+					<img src="../assets/icon/person.svg" alt="" aria-hidden="true" />
+					<span>Profil</span>
+				</div>
+			</div>
+		</div>
+	`;
+}
+
+/**
+ * Returns external creator row template.
+ * @param {{name:string}} viewModel
+ * @returns {string}
+ */
+function getBoardTaskDetailExternalCreatorTemplate(viewModel) {
+	return `
+		<div class="board-task-detail-row">
+			<span>Creator:</span>
+			<div class="board-creator-row">
+				<div class="board-creator-tag board-creator-tag--extern">
+					<img src="../assets/icon/extern.svg" alt="" aria-hidden="true" />
+					<span>Extern</span>
+				</div>
+				<span class="board-creator-name">${viewModel.name}</span>
+				<div class="board-creator-action">
+					<img src="../assets/icon/email.svg" alt="" aria-hidden="true" />
+					<span>E-mail</span>
+				</div>
+			</div>
+		</div>
 	`;
 }
 

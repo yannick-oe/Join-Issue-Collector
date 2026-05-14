@@ -48,7 +48,35 @@ function getBoardTaskDetailMetaFields(task) {
 		priorityIcon: boardState.priorityIcons[task.priority] || boardState.priorityIcons.medium,
 		assigneesHtml: buildBoardTaskDetailAssigneesHtml(task),
 		subtasksHtml: buildBoardTaskDetailSubtasksHtml(task),
+		aiBadgeHtml: buildBoardTaskDetailAiBadgeHtml(task),
+		creatorHtml: buildBoardTaskDetailCreatorHtml(task),
 	};
+}
+
+/**
+ * Returns AI badge HTML if task was generated from an email request.
+ * @param {Object} task
+ * @returns {string}
+ */
+function buildBoardTaskDetailAiBadgeHtml(task) {
+	if (!task.isEmailRequest) return "";
+	return getBoardTaskDetailAiBadgeTemplate();
+}
+
+/**
+ * Returns creator row HTML based on task origin.
+ * Falls back gracefully when creator fields are absent.
+ * @param {Object} task
+ * @returns {string}
+ */
+function buildBoardTaskDetailCreatorHtml(task) {
+	const name = boardEscapeHtml(task.creatorLabel || task.creatorName || "");
+	if (!name) return "";
+	const isExternal = task.isEmailRequest || task.creatorType === "external";
+	const vm = { name, creatorEmail: boardEscapeHtml(task.creatorEmail || "") };
+	return isExternal
+		? getBoardTaskDetailExternalCreatorTemplate(vm)
+		: getBoardTaskDetailMemberCreatorTemplate(vm);
 }
 
 /**
