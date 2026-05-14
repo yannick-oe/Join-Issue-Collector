@@ -135,7 +135,7 @@ h1 {
 }
 
 .font-size16 {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 400;
 }
 
@@ -152,8 +152,8 @@ h1 {
 
 .circlee {
     background-color: #ff3d00;
-    height: 69px;
-    width: 69px;
+    height: 60px;
+    width: 60px;
     border-radius: 50%;
 }
 
@@ -207,6 +207,9 @@ h2 {
     flex: 1;
     width: auto;
     margin-bottom: 0;
+    padding: 0 16px;
+    gap: 12px;
+    justify-content: flex-start;
 }
 
 .summary-email-card {
@@ -262,6 +265,44 @@ h2 {
     -webkit-background-clip: unset;
     background-clip: unset;
     -webkit-text-fill-color: #FFFFFF;
+}
+
+/* ── Urgent section (icon + count + label) ────────────── */
+.summary-urgent-section {
+    flex: 0 0 auto;
+    align-items: center;
+}
+
+/* ── Deadline section (date + label) ─────────────────── */
+.summary-deadline-section {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 4px;
+}
+
+.summary-deadline-section .padding-bottom10 {
+    font-size: 20px;
+    line-height: 1.2;
+    padding-bottom: 4px;
+    white-space: nowrap;
+}
+
+.summary-deadline-label {
+    font-size: 14px;
+    font-weight: 400;
+    white-space: nowrap;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    text-align: center;
+    color: #2A3647;
+}
+
+.sumary-third-line:hover .summary-deadline-label {
+    color: #FFFFFF;
 }
 
 @media (max-width: 900px) {
