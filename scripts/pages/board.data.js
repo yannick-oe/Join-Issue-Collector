@@ -149,15 +149,17 @@ function boardNormalizeSubtask(subtask, index) {
 }
 
 /**
- * Normalizes board status value.
+ * Normalizes board status value. Unknown or missing statuses fall back to "triage".
  * @param {string} status
  */
 function boardNormalizeStatus(status) {
 	const value = boardNormalizeText(status);
+	if (value === "triage") return "triage";
+	if (value === "todo") return "todo";
 	if (value === "in progress" || value === "in-progress") return "in-progress";
 	if (value === "await feedback" || value === "await-feedback") return "await-feedback";
 	if (value === "done") return "done";
-	return "todo";
+	return "triage";
 }
 
 /**

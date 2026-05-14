@@ -15,7 +15,7 @@ body {
 }
 
 .board-content {
-	max-width: 1170px;
+	max-width: 1500px;
 	padding: 72px 90px 110px;
 	box-sizing: border-box;
 }
@@ -98,9 +98,11 @@ body {
 
 .board-columns {
 	display: grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr));
+	grid-template-columns: repeat(5, minmax(200px, 1fr));
 	gap: 20px;
 	align-items: start;
+	overflow-x: auto;
+	padding-bottom: 12px;
 }
 
 .board-column {

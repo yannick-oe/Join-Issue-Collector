@@ -222,7 +222,7 @@ function validateTaskForm() {
 function buildTaskPayload() {
 	const teamMembers = addTaskState.selectedContactIds.slice();
 	const subtasks = addTaskState.subtasks.map((item) => ({ ...item, done: false }));
-	return { id: createId("t"), title: getInputValue("taskTitle").trim(), description: getInputValue("taskDescription").trim(), dueDate: getInputValue("taskDate"), priority: addTaskState.priority, category: addTaskState.selectedCategory, teamMembers, subtasks, status: "todo", createdAt: Date.now() };
+	return { id: createId("t"), title: getInputValue("taskTitle").trim(), description: getInputValue("taskDescription").trim(), dueDate: getInputValue("taskDate"), priority: addTaskState.priority, category: addTaskState.selectedCategory, teamMembers, subtasks, status: "triage", createdAt: Date.now() };
 }
 
 /**

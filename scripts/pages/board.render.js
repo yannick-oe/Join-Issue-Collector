@@ -187,6 +187,7 @@ function buildBoardTeamMemberOverflow(teamMemberIds, maxVisibleMembers) {
  * @param {string} status
  */
 function getBoardEmptyStateText(status) {
+	if (status === "triage") return "No tasks Triage";
 	if (status === "done") return "No tasks Done";
 	if (status === "in-progress") return "No tasks In progress";
 	if (status === "await-feedback") return "No tasks Await feedback";

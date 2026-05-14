@@ -121,7 +121,7 @@
 						<span class="board-search-icon">⌕</span>
 					</label>
 					<button id="boardAddTaskButton" class="button-primary board-add-task" type="button"
-						onclick="openBoardAddTaskOverlay('todo')">Add task <span>＋</span></button>
+						onclick="openBoardAddTaskOverlay('triage')">Add task <span>＋</span></button>
 				</div>
 			</div>
 
@@ -134,6 +134,16 @@
 			</div>
 
 			<section class="board-columns">
+				<article class="board-column">
+					<div class="board-column-header">
+						<h2>Triage</h2>
+						<button type="button" class="board-add-column-card" aria-label="Add task to triage"
+							onclick="openBoardAddTaskOverlay('triage')">+</button>
+					</div>
+					<div id="boardColumnTriage" class="board-column-drop-zone" ondrop="dropTaskToStatus(event, 'triage')"
+						ondragover="allowTaskDrop(event, 'triage')"></div>
+				</article>
+
 				<article class="board-column">
 					<div class="board-column-header">
 						<h2>To do</h2>

@@ -349,6 +349,7 @@ function getBoardMoveMenuOptionHtml(task, status, currentStatusIndex) {
  * @param {string} status
  */
 function getBoardStatusLabel(status) {
+    if (status === "triage") return "Triage";
     if (status === "in-progress") return "In progress";
     if (status === "await-feedback") return "Review";
     if (status === "done") return "Done";
