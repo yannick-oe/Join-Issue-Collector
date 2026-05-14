@@ -16,10 +16,33 @@
 const SH_DAILY_LIMIT = 10;
 
 /**
- * Contact email address for direct fallback emails.
+ * Contact email address for all stakeholder email requests.
  * Replace with the real team inbox before going live.
  */
 const SH_TEAM_EMAIL = "team@join-app.example.com";
+
+/**
+ * Subject line shared by all stakeholder request emails.
+ * Centralised here so the n8n parser rule targets a single string.
+ */
+const SH_REQUEST_SUBJECT = "Join Feature Request";
+
+/**
+ * Pre-filled body template shown in the user's email client.
+ * Guides the stakeholder to provide the information n8n needs.
+ */
+const SH_REQUEST_BODY = [
+    "Hi Join team,",
+    "",
+    "I would like to submit the following request:",
+    "",
+    "Request type:",
+    "Short description:",
+    "Expected benefit:",
+    "Deadline, if any:",
+    "",
+    "Best regards",
+].join("\n");
 
 // #endregion
 
@@ -127,13 +150,23 @@ function renderLimitReachedScreen() {
 // #region CTA handlers
 
 /**
+ * Builds a mailto: href using the centralised address, subject and body template.
+ * Swap this function body for an n8n webhook POST when the automation is ready.
+ *
+ * @returns {string} Fully encoded mailto: URL.
+ */
+function buildRequestMailtoHref() {
+    const subject = encodeURIComponent(SH_REQUEST_SUBJECT);
+    const body = encodeURIComponent(SH_REQUEST_BODY);
+    return `mailto:${SH_TEAM_EMAIL}?subject=${subject}&body=${body}`;
+}
+
+/**
  * Handles the "Create Email Request" CTA.
+ * Opens the user's email client with the shared request template.
  *
- * In the current frontend-only phase this increments the in-memory counter
- * and — when the limit is reached — transitions to the limit screen.
- *
- * TODO: Replace the counter increment with a real Firebase / n8n call before
- *       going to production.
+ * TODO: Replace window.location.href assignment with a real n8n webhook
+ *       POST call here once the automation workflow is live.
  */
 function submitEmailRequest() {
     if (shRequestsUsedToday >= SH_DAILY_LIMIT) {
@@ -149,45 +182,20 @@ function submitEmailRequest() {
     }
 
     updateCounterBadge("shCounterText", shRequestsUsedToday, SH_DAILY_LIMIT);
-
-    // TODO: Open the actual request form / trigger n8n webhook here.
-    // For now show a simple confirmation feedback.
-    showRequestSubmittedFeedback();
+    window.location.href = buildRequestMailtoHref();
 }
 
 /**
- * Opens the user's email client with a pre-filled mailto: link
- * for the direct fallback path on the limit-reached screen.
+ * Handles the "Send an email" CTA on the limit-reached screen.
+ * Uses the same centralised template as the primary CTA.
  */
 function sendDirectEmail() {
-    const subject = encodeURIComponent("Join – Direct Request (limit reached)");
-    const body = encodeURIComponent(
-        "Hello Join team,\n\nI would like to submit a request:\n\n[Please describe your request here]\n\nBest regards,"
-    );
-    window.location.href = `mailto:${SH_TEAM_EMAIL}?subject=${subject}&body=${body}`;
+    window.location.href = buildRequestMailtoHref();
 }
 
 // #endregion
 
 // #region UI helpers
-
-/**
- * Shows a brief inline confirmation after a request is submitted.
- * Replaces the CTA button text for 2 seconds, then restores it.
- */
-function showRequestSubmittedFeedback() {
-    const btn = document.querySelector("#screenStakeholder .sh-cta-btn");
-    if (!btn) return;
-    const original = btn.textContent;
-    btn.textContent = "Request submitted ✓";
-    btn.disabled = true;
-    btn.style.opacity = "0.8";
-    setTimeout(() => {
-        btn.textContent = original;
-        btn.disabled = false;
-        btn.style.opacity = "";
-    }, 2000);
-}
 
 /**
  * Activates one screen by id and hides all others.
