@@ -137,23 +137,29 @@
                         </section>
                     </section>
 
-                    <section class="sumary-third-line" onclick="openBoardPage()">
-                        <div class="center gap15">
-                            <div class="circlee center">
-                                <img src="../assets/icon/high-prio.svg" class="icon-size" alt="Urgent-Icon">
-                            </div>
+                    <div class="summary-third-row">
+                        <section class="sumary-third-line" onclick="openBoardPage()">
+                            <div class="center gap15">
+                                <div class="circlee center">
+                                    <img src="../assets/icon/high-prio.svg" class="icon-size" alt="Urgent-Icon">
+                                </div>
 
-                            <div>
-                                <p id="summaryUrgentCount" class="font-size64 text-align">0</p>
-                                <p class="text-align font-size16">Urgent</p>
+                                <div>
+                                    <p id="summaryUrgentCount" class="font-size64 text-align">0</p>
+                                    <p class="text-align font-size16">Urgent</p>
+                                </div>
                             </div>
+                            <div class="seperator-line"></div>
+                            <div>
+                                <p id="summaryUpcomingDate" class="text-align padding-bottom10">No deadline</p>
+                                <p class="text-align">Upcoming Deadline</p>
+                            </div>
+                        </section>
+                        <div class="box-size summary-email-card" onclick="openBoardPage()">
+                            <p id="summaryEmailRequestsCount" class="summary-email-count">0</p>
+                            <p class="font-size20 text-align">Email requests</p>
                         </div>
-                        <div class="seperator-line"></div>
-                        <div>
-                            <p id="summaryUpcomingDate" class="text-align padding-bottom10">No deadline</p>
-                            <p class="text-align">Upcoming Deadline</p>
-                        </div>
-                    </section>
+                    </div>
 
                     <section class="center gap20">
                         <div class="box-size" onclick="openBoardPage()">
@@ -167,13 +173,6 @@
                         <div class="box-size font-size20" onclick="openBoardPage()">
                             <p id="summaryAwaitingFeedbackCount" class="text-align font-size64">0</p>
                             <p class="font-size20 text-align">Awaiting Feedback</p>
-                        </div>
-                    </section>
-
-                    <section class="center gap20 summary-email-row">
-                        <div class="box-size font-size20">
-                            <p id="summaryEmailRequestsCount" class="text-align font-size64">0</p>
-                            <p class="font-size20 text-align">Email requests</p>
                         </div>
                     </section>
                 </section>
