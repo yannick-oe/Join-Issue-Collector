@@ -119,11 +119,11 @@ function getBoardTaskDetailBodyTemplate(viewModel) {
 	return `
 		<h3 class="board-task-detail-title">${viewModel.title}</h3>
 		<p class="board-task-detail-description">${viewModel.description}</p>
+		${viewModel.creatorHtml || ""}
 		<div class="board-task-detail-row"><span>Due date:</span><p>${viewModel.dueDateLabel}</p></div>
 		<div class="board-task-detail-row"><span>Priority:</span><p>${viewModel.priorityLabel} <img src="${viewModel.priorityIcon}" alt="${viewModel.priorityLabel}" /></p></div>
-		${viewModel.creatorHtml || ""}
 		<div class="board-task-detail-section"><h4>Assigned To:</h4><div class="board-task-detail-assignees">${viewModel.assigneesHtml}</div></div>
-		<div class="board-task-detail-section"><h4>Subtasks:</h4><div class="board-task-detail-subtasks">${viewModel.subtasksHtml}</div></div>
+		<div class="board-task-detail-section"><h4>Subtasks</h4><div class="board-task-detail-subtasks">${viewModel.subtasksHtml}</div></div>
 	`;
 }
 
