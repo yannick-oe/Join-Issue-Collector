@@ -28,17 +28,34 @@ const SH_REQUEST_SUBJECT = "[JOIN-ISSUE-COLLECTOR] New Stakeholder Request";
 
 /**
  * Pre-filled body template shown in the user's email client.
- * Clean, user-facing structure — n8n identifies the request via the subject prefix.
+ * Structured so n8n/Gemini can reliably extract title, description,
+ * category, priority, dueDate and subtasks. No technical tokens —
+ * the request is identified exclusively via the subject prefix.
  */
 const SH_REQUEST_BODY = [
     "Hi Join team,",
     "",
     "I would like to submit the following request:",
     "",
-    "Request type:",
-    "Short description:",
+    "Request title:",
+    "[Please enter a short title]",
+    "",
+    "Request description:",
+    "[Please describe your request]",
+    "",
     "Expected benefit:",
-    "Deadline, if any:",
+    "[Please describe the expected benefit]",
+    "",
+    "Due date:",
+    "[Please enter a date, e.g. 2026-05-20, 20.05.2026, tomorrow, next Friday]",
+    "",
+    "Priority:",
+    "[low / medium / urgent]",
+    "",
+    "Suggested subtasks (optional):",
+    "- [Optional subtask 1]",
+    "- [Optional subtask 2]",
+    "- [Optional subtask 3]",
     "",
     "Best regards",
 ].join("\n");

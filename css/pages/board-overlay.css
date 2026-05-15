@@ -300,14 +300,14 @@
 }
 
 .board-creator-tag--extern {
-	background: #fef3cd;
-	color: #7a5000;
+	background: #EBFC88;
+	color: #0B3681;
 }
 
 .board-creator-name {
 	flex: 1;
 	text-align: left;
-	font-size: 16px;
+	font-size: 18px;
 	color: #2a3647;
 	overflow: hidden;
 	text-overflow: ellipsis;
