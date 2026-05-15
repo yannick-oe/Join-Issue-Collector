@@ -233,17 +233,20 @@ function buildTaskPayload() {
 
 /**
  * Returns origin metadata fields for manually created member tasks.
+ * Reads creator name, email and id from the active session when available.
  * @returns {Object}
  */
 function buildTaskManualOriginFields() {
+	const user = typeof getSessionUser === "function" ? getSessionUser() : null;
 	return {
 		isEmailRequest: false,
 		aiGenerated: false,
 		requestSource: "manual",
 		requestStatus: "",
 		creatorType: "member",
-		creatorLabel: "",
-		creatorEmail: "",
+		creatorLabel: (user && user.name) ? user.name : "",
+		creatorEmail: (user && user.email) ? user.email : "",
+		creatorContactId: (user && user.id) ? user.id : "",
 	};
 }
 

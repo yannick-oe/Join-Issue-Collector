@@ -54,12 +54,12 @@ function getBoardTaskDetailMetaFields(task) {
 }
 
 /**
- * Returns AI badge HTML if task was generated from an email request.
+ * Returns AI badge HTML only when the task was AI-generated.
  * @param {Object} task
  * @returns {string}
  */
 function buildBoardTaskDetailAiBadgeHtml(task) {
-	if (!task.isEmailRequest) return "";
+	if (!task.aiGenerated) return "";
 	return getBoardTaskDetailAiBadgeTemplate();
 }
 
@@ -73,10 +73,27 @@ function buildBoardTaskDetailCreatorHtml(task) {
 	const name = boardEscapeHtml(task.creatorLabel || task.creatorName || "");
 	if (!name) return "";
 	const isExternal = task.isEmailRequest || task.creatorType === "external";
-	const vm = { name, creatorEmail: boardEscapeHtml(task.creatorEmail || "") };
-	return isExternal
-		? getBoardTaskDetailExternalCreatorTemplate(vm)
-		: getBoardTaskDetailMemberCreatorTemplate(vm);
+	if (isExternal) {
+		return getBoardTaskDetailExternalCreatorTemplate({ name, creatorEmail: boardEscapeHtml(task.creatorEmail || "") });
+	}
+	const contactId = resolveBoardMemberCreatorContactId(task);
+	return getBoardTaskDetailMemberCreatorTemplate({ name, contactId });
+}
+
+/**
+ * Resolves the contact id for a member-created task.
+ * Prefers task.creatorContactId, then falls back to a name match in boardState.contacts.
+ * @param {Object} task
+ * @returns {string}
+ */
+function resolveBoardMemberCreatorContactId(task) {
+	if (task.creatorContactId) return task.creatorContactId;
+	const label = (task.creatorLabel || task.creatorName || "").toLowerCase().trim();
+	if (!label) return "";
+	const match = (boardState.contacts || []).find(
+		(c) => (c.name || "").toLowerCase().trim() === label
+	);
+	return match ? String(match.id) : "";
 }
 
 /**

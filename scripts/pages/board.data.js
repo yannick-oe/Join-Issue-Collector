@@ -1,12 +1,12 @@
 // #region Load and persist
 /**
- * Loads board contacts and tasks and ensures demo data.
+ * Loads board contacts and tasks from active storage.
+ * If no tasks are found the board starts empty — demo data is not
+ * inserted automatically so Firebase remains the single source of truth.
  */
 async function loadBoardData() {
 	boardState.contacts = await loadBoardContactsSafe();
 	boardState.tasks = await loadBoardTasksSafe();
-	if (boardState.tasks.length) return;
-	await ensureBoardDemoData();
 }
 
 /**
@@ -141,6 +141,7 @@ function getBoardNormalizedTaskOriginFields(task) {
 		creatorType: String(task.creatorType || (isEmail ? "external" : "member")),
 		creatorLabel: String(task.creatorLabel || task.creatorName || ""),
 		creatorEmail: String(task.creatorEmail || ""),
+		creatorContactId: String(task.creatorContactId || ""),
 	};
 }
 

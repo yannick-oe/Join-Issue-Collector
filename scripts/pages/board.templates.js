@@ -142,10 +142,14 @@ function getBoardTaskDetailAiBadgeTemplate() {
 
 /**
  * Returns member creator row template.
- * @param {{name:string}} viewModel
+ * Renders a Profil link when contactId is available, a disabled label otherwise.
+ * @param {{name:string, contactId:string}} viewModel
  * @returns {string}
  */
 function getBoardTaskDetailMemberCreatorTemplate(viewModel) {
+	const profilHtml = viewModel.contactId
+		? `<a class="board-creator-action" href="./contacts.html?contactId=${viewModel.contactId}"><img src="../assets/icon/person.svg" alt="" aria-hidden="true" /><span>Profil</span></a>`
+		: `<span class="board-creator-action board-creator-action--disabled"><img src="../assets/icon/person.svg" alt="" aria-hidden="true" /><span>Profil</span></span>`;
 	return `
 		<div class="board-task-detail-row">
 			<span>Creator:</span>
@@ -155,10 +159,7 @@ function getBoardTaskDetailMemberCreatorTemplate(viewModel) {
 					<span>Member</span>
 				</div>
 				<span class="board-creator-name">${viewModel.name}</span>
-				<div class="board-creator-action">
-					<img src="../assets/icon/person.svg" alt="" aria-hidden="true" />
-					<span>Profil</span>
-				</div>
+				${profilHtml}
 			</div>
 		</div>
 	`;

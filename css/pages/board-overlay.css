@@ -293,8 +293,8 @@
 }
 
 .board-creator-tag--member {
-	background: #dff2e0;
-	color: #1a7a2e;
+	background: #92FFBC;
+	color: #0B3681;
 }
 
 .board-creator-tag--extern {
@@ -338,4 +338,22 @@
 		text-align: left;
 		flex-basis: 100%;
 	}
+}
+
+a.board-creator-action {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+a.board-creator-action:hover {
+	color: #29abe2;
+}
+
+a.board-creator-action:hover img {
+	filter: brightness(0) saturate(100%) invert(61%) sepia(74%) saturate(1710%) hue-rotate(165deg) brightness(91%) contrast(89%);
+}
+
+.board-creator-action--disabled {
+	opacity: 0.4;
+	pointer-events: none;
 }
