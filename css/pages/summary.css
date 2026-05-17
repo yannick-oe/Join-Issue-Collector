@@ -1,5 +1,7 @@
 .summary-main {
-    padding-left: 230px;
+    padding-left: 290px;
+    padding-right: 48px;
+    box-sizing: border-box;
     background-color: #f6f7f8;
     min-height: calc(100vh - 100px);
 }
@@ -22,7 +24,8 @@
 
 .summary-box {
     width: 560px;
-    padding-left: 120px;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .summary-second-line {
@@ -60,7 +63,7 @@
 }
 
 h1 {
-    padding-left: 120px;
+    padding-left: 0;
     margin: 0;
     font-size: 61px;
     line-height: 1;
