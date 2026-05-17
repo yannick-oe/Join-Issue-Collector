@@ -28,7 +28,6 @@ body {
     background-color: #1e2b3c;
     justify-content: center;
     align-items: center;
-    padding: 24px;
     overflow-x: hidden;
     width: 100%;
 }
@@ -246,10 +245,9 @@ body {
 }
 
 .sh-content-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
+    display: flex;
     align-items: center;
+    justify-content: space-evenly;
     width: 100%;
     max-width: 1100px;
     margin: 0 auto;
@@ -291,6 +289,7 @@ body {
     color: #2a3647;
     line-height: 1.45;
     margin: 0;
+    max-width: 400px;
 }
 
 .sh-illustration-img {
@@ -343,6 +342,15 @@ body {
 .sh-cta-btn:hover {
     filter: brightness(1.08);
     transform: translateY(-2px);
+}
+
+.sh-cta-btn--disabled,
+.sh-cta-btn:disabled {
+    background: #a0aab4;
+    color: #ffffff;
+    cursor: not-allowed;
+    transform: none !important;
+    filter: none !important;
 }
 
 /* ── Illustration column ──────────────────────────────── */

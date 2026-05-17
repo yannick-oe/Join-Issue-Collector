@@ -15,6 +15,9 @@
 /** Maximum number of automated requests allowed per day. */
 const SH_DAILY_LIMIT = 10;
 
+/** localStorage key for the per-day click counter object. */
+const SH_COUNTER_KEY = "joinStakeholderRequestCounter";
+
 /**
  * Contact email address for all stakeholder email requests.
  */
@@ -110,6 +113,51 @@ function isTimestampToday(ts) {
 
 // #endregion
 
+// #region localStorage counter helpers
+
+/**
+ * Returns today's date as an ISO date string "YYYY-MM-DD".
+ *
+ * @returns {string}
+ */
+function getTodayKey() {
+    return new Date().toISOString().slice(0, 10);
+}
+
+/**
+ * Reads today's click count from localStorage.
+ * Returns 0 when no entry exists for the current day.
+ *
+ * @returns {number}
+ */
+function getLocalDailyCount() {
+    try {
+        const stored = JSON.parse(localStorage.getItem(SH_COUNTER_KEY) || "{}");
+        return Number(stored[getTodayKey()]) || 0;
+    } catch (_) {
+        return 0;
+    }
+}
+
+/**
+ * Increments today's click count in localStorage and returns the updated value.
+ *
+ * @returns {number} The new count after incrementing.
+ */
+function incrementLocalDailyCount() {
+    try {
+        const stored = JSON.parse(localStorage.getItem(SH_COUNTER_KEY) || "{}");
+        const key = getTodayKey();
+        stored[key] = (Number(stored[key]) || 0) + 1;
+        localStorage.setItem(SH_COUNTER_KEY, JSON.stringify(stored));
+        return stored[key];
+    } catch (_) {
+        return 0;
+    }
+}
+
+// #endregion
+
 // #region Init
 
 /**
@@ -117,7 +165,8 @@ function isTimestampToday(ts) {
  * Reads the ?view query param and renders the correct screen.
  */
 async function initStakeholderPage() {
-    shRequestsUsedToday = await loadTodayEmailRequestCount();
+    const firebaseCount = await loadTodayEmailRequestCount();
+    shRequestsUsedToday = Math.max(firebaseCount, getLocalDailyCount());
     const view = getViewParam();
     switch (view) {
         case "stakeholder":
@@ -149,7 +198,8 @@ function showWelcomeScreen() {
  * if the quota is already exhausted.
  */
 async function showStakeholderScreen() {
-    shRequestsUsedToday = await loadTodayEmailRequestCount();
+    const firebaseCount = await loadTodayEmailRequestCount();
+    shRequestsUsedToday = Math.max(firebaseCount, getLocalDailyCount());
     if (shRequestsUsedToday >= SH_DAILY_LIMIT) {
         showLimitReachedScreen();
         return;
@@ -187,10 +237,12 @@ function renderWelcomeScreen() {
 }
 
 /**
- * Activates the stakeholder request screen, updates the counter badge.
+ * Activates the stakeholder request screen, updates the counter badge,
+ * and applies the CTA disabled state when the daily limit is reached.
  */
 function renderStakeholderScreen() {
     updateCounterBadge("shCounterText", shRequestsUsedToday, SH_DAILY_LIMIT);
+    applyCtaLimitState(shRequestsUsedToday);
     setActiveScreen("screenStakeholder");
 }
 
@@ -220,11 +272,20 @@ function buildRequestMailtoHref() {
 
 /**
  * Handles the "Create Email Request" CTA.
- * Opens the user's email client with the shared request template.
- * Counter increment is intentionally omitted — the real daily limit
- * is enforced by n8n after the email is received.
+ * Increments the localStorage counter immediately, updates the UI,
+ * then opens the user's email client. Blocks the action when the
+ * daily limit has already been reached.
  */
 function submitEmailRequest() {
+    const currentCount = getLocalDailyCount();
+    if (currentCount >= SH_DAILY_LIMIT) {
+        applyCtaLimitState(currentCount);
+        return;
+    }
+    const newCount = incrementLocalDailyCount();
+    shRequestsUsedToday = newCount;
+    updateCounterBadge("shCounterText", newCount, SH_DAILY_LIMIT);
+    applyCtaLimitState(newCount);
     window.location.href = buildRequestMailtoHref();
 }
 
@@ -270,6 +331,21 @@ function setActiveScreen(activeId) {
 function updateCounterBadge(elementId, used, limit) {
     const el = document.getElementById(elementId);
     if (el) el.textContent = `${used} of ${limit} requests used today`;
+}
+
+/**
+ * Applies or removes the visual disabled state on the CTA button.
+ * Changes the button text to signal a reached limit and prevents further clicks.
+ *
+ * @param {number} count - Current daily click count.
+ */
+function applyCtaLimitState(count) {
+    const btn = document.getElementById("shCtaBtn");
+    if (!btn) return;
+    const limitReached = count >= SH_DAILY_LIMIT;
+    btn.disabled = limitReached;
+    btn.classList.toggle("sh-cta-btn--disabled", limitReached);
+    btn.textContent = limitReached ? "Daily limit reached" : "Create Email Request ✓";
 }
 
 // #endregion
