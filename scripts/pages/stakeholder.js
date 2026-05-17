@@ -170,7 +170,11 @@ async function initStakeholderPage() {
     const view = getViewParam();
     switch (view) {
         case "stakeholder":
-            renderStakeholderScreen();
+            if (shRequestsUsedToday >= SH_DAILY_LIMIT) {
+                renderLimitReachedScreen();
+            } else {
+                renderStakeholderScreen();
+            }
             break;
         case "limit-reached":
             renderLimitReachedScreen();
@@ -237,12 +241,10 @@ function renderWelcomeScreen() {
 }
 
 /**
- * Activates the stakeholder request screen, updates the counter badge,
- * and applies the CTA disabled state when the daily limit is reached.
+ * Activates the stakeholder request screen and updates the counter badge.
  */
 function renderStakeholderScreen() {
     updateCounterBadge("shCounterText", shRequestsUsedToday, SH_DAILY_LIMIT);
-    applyCtaLimitState(shRequestsUsedToday);
     setActiveScreen("screenStakeholder");
 }
 
@@ -279,14 +281,17 @@ function buildRequestMailtoHref() {
 function submitEmailRequest() {
     const currentCount = getLocalDailyCount();
     if (currentCount >= SH_DAILY_LIMIT) {
-        applyCtaLimitState(currentCount);
+        showLimitReachedScreen();
         return;
     }
     const newCount = incrementLocalDailyCount();
     shRequestsUsedToday = newCount;
-    updateCounterBadge("shCounterText", newCount, SH_DAILY_LIMIT);
-    applyCtaLimitState(newCount);
     window.location.href = buildRequestMailtoHref();
+    if (newCount >= SH_DAILY_LIMIT) {
+        showLimitReachedScreen();
+    } else {
+        updateCounterBadge("shCounterText", newCount, SH_DAILY_LIMIT);
+    }
 }
 
 /**
