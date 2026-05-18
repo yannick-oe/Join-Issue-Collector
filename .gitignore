@@ -20,6 +20,10 @@ firebase-debug.log
 .firebaserc.local
 .firebase/
 
+# Firebase project config (contains live DB URL) — copy from firebase-config.example.js
+scripts/firebase-config.js
+firebase-config.js
+
 # ─────────────────────────────────────────────
 # n8n
 # ─────────────────────────────────────────────

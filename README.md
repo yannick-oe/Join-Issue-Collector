@@ -157,16 +157,17 @@ Open `index.html` with **Live Server** — no build step required.
 ### Configuration
 
 **Firebase**  
-Update `scripts/storage.js` with your Firebase project configuration:
+Create your local config file from the provided template:
+```bash
+cp scripts/firebase-config.example.js scripts/firebase-config.js
+```
+Then edit `scripts/firebase-config.js` and replace the placeholder URL with your Firebase Realtime Database URL:
 ```js
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  // ...
+const FIREBASE_CONFIG = {
+  baseUrl: "https://YOUR-PROJECT-default-rtdb.YOUR-REGION.firebasedatabase.app/",
 };
 ```
+> `firebase-config.js` is gitignored and must never be committed. `firebase-config.example.js` serves as the committed template.
 
 **n8n Workflow**  
 Import the workflow definition (see `docs/n8n-task-payload.md`) into your n8n instance. Configure the Gmail trigger with the receiving inbox credentials.
@@ -189,7 +190,9 @@ join-360/
 │   ├── contacts.html
 │   └── ...
 ├── scripts/
-│   ├── storage.js                # Firebase config & helpers
+│   ├── firebase-config.js        # ⚠ gitignored — local DB URL (create from example)
+│   ├── firebase-config.example.js# Template for firebase-config.js
+│   ├── storage.js                # Storage adapter (Firebase / localStorage)
 │   └── pages/
 │       ├── board.data.js         # Data fetching & Firebase sync
 │       ├── board.render.js       # Card and column rendering
