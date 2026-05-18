@@ -1,4 +1,27 @@
-/* Mobile (425px bis 320px) */
+/* Mobile (560px bis 320px) */
+
+@media (max-width: 440px) {
+    .board-task-detail-panel {
+        max-height: 740px;
+    }
+
+    .board-task-detail-title {
+        font-size: 22px;
+    }
+
+    .board-task-detail-description,
+    .board-creator-name,
+    .board-task-detail-row p,
+    .board-task-detail-row>span:first-child,
+    .board-task-detail-section h4,
+    .board-task-detail-subtask-item {
+        font-size: 16px;
+    }
+
+    .board-task-detail-panel {
+        padding: 28px 28px 0px 28px;
+    }
+}
 
 @media (max-width: 425px) {
     .summary-first-line {
@@ -57,10 +80,6 @@
 
     .box-size {
         width: 90px;
-    }
-
-    .board-task-detail-title {
-        font-size: 36px;
     }
 
     .header_right {
