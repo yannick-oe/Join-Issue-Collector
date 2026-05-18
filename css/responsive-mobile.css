@@ -52,35 +52,10 @@
         bottom: auto;
     }
 
-    .size {
-        width: 140px;
-    }
-
-    .gap15 {
-        gap: 0;
-    }
-
-    .summary-second-line {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .summary-second-line>section {
-        flex: 0;
-    }
-
-    .sumary-third-line {
-        width: 285px;
-    }
-
-    .gap20 {
-        gap: 10px;
-    }
-
-    .box-size {
-        width: 90px;
-    }
+    /* ── Summary: gap reductions on narrow phones ──────── */
+    .summary-second-line { gap: 10px; }
+    .summary-third-row { gap: 10px; }
+    .center.gap20 { gap: 8px; }
 
     .header_right {
         bottom: 108px;
@@ -139,6 +114,20 @@
         display: flex;
         flex-direction: column;
     }
+
+    /* ── Summary: scale down for small screens ──────────── */
+    .size { height: 110px; }
+
+    .summary-third-row > .sumary-third-line,
+    .summary-third-row > .box-size { height: 110px; }
+
+    .center.gap20 > .box-size { height: 90px; }
+
+    .summary-box .font-size64,
+    .sumary-third-line .font-size64,
+    .center.gap20 .font-size64 { font-size: 38px; }
+
+    .summary-email-count { font-size: 38px; }
 }
 
 @media (max-width: 320px) {
@@ -148,4 +137,10 @@
         padding-left: 10px;
         padding-right: 10px;
     }
+
+    /* ── Summary: tighten gaps on smallest screens ──────── */
+    .sumary-main-layout { padding: 0 8px; }
+    .summary-second-line { gap: 8px; }
+    .summary-third-row { gap: 8px; }
+    .center.gap20 { gap: 6px; }
 }

@@ -421,13 +421,39 @@
         gap: 30px;
     }
 
-    .sumary-third-line {
-        width: 530px;
-        margin: 0 auto;
+    .circle {
+        height: 60px;
+        width: 60px;
+    }
+
+    .size {
+        height: 130px;
+        width: 200px;
     }
 
     .box-size {
+        height: 130px;
         width: 155px;
+    }
+
+    .summary-deadline-section,
+    .padding-bottom10 {
+        font-size: 16px;
+        padding-bottom: 4px;
+    }
+
+    .font-size64 {
+        font-size: 54px;
+    }
+
+    .font-size20 {
+        font-size: 16px;
+    }
+
+    .sumary-third-line {
+        margin-bottom: 0 !important;
+        height: 130px;
+        padding: 0 10px;
     }
 
     .summary-first {
@@ -496,7 +522,6 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
-        padding: 86px 120px 28px;
     }
 
     .summary-first-line h1 {
@@ -532,15 +557,8 @@
     }
 
     .box-size {
-        height: 145px;
-        width: 145px;
         gap: 15px;
-        justify-content: flex-start;
-        padding-top: 20px;
-    }
-
-    .summary-box {
-        padding-left: 80px;
+        justify-content: center;
     }
 
     .gap20 {

@@ -287,7 +287,7 @@ h2 {
     padding-left: 4px;
 }
 
-.summary-deadline-section .padding-bottom10 {
+.summary-deadline-section {
     font-size: 20px;
     line-height: 1.2;
     padding-bottom: 4px;
@@ -310,7 +310,7 @@ h2 {
 
 @media (max-width: 900px) {
     .summary-third-row {
-        flex-direction: column;
+        flex-direction: row;
         gap: 20px;
     }
 

@@ -1,20 +1,11 @@
 /* Tablet (768px bis 560px) */
 
 @media (max-width: 768px) {
-    main {
-        height: 100vh;
-    }
-
-    .hight {
-        height: 105vh;
-    }
-
     aside {
         display: none;
     }
 
     header {
-        height: 80px;
         padding: 0 16px;
     }
 
@@ -484,70 +475,121 @@
 }
 
 @media (max-width: 560px) {
+    /* ── Summary: Row 1 — To-do + Done (2 equal columns) ── */
     .summary-second-line {
-        justify-content: space-between;
-        gap: 14px;
-        padding-bottom: 18px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding-top: 0;
+        padding-bottom: 12px;
+    }
+
+    .summary-second-line > section {
+        min-width: 0;
+        display: flex;
     }
 
     .size {
+        flex: 1;
         width: 100%;
-        height: 100px;
-        border-radius: 24px;
+        height: 130px;
+        border-radius: 20px;
+        box-sizing: border-box;
     }
 
+    /* ── Summary: Row 2 — Urgent/Deadline + Email ──────── */
+    .summary-third-row {
+        display: grid;
+        grid-template-columns: 3fr 2fr;
+        gap: 12px;
+        margin-bottom: 12px !important;
+    }
+
+    .summary-third-row > .sumary-third-line {
+        width: auto;
+        height: 130px;
+        padding: 0 12px;
+        margin-bottom: 0;
+        border-radius: 20px;
+        justify-content: flex-start;
+        gap: 8px;
+    }
+
+    .summary-third-row > .box-size {
+        width: auto;
+        height: 130px;
+        border-radius: 20px;
+        padding: 8px 8px;
+        box-sizing: border-box;
+    }
+
+    .sumary-third-line .seperator-line {
+        height: 70px;
+    }
+
+    /* ── Summary: Row 3 — 3 equal stat cards ───────────── */
+    .center.gap20 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .center.gap20 > .box-size {
+        width: auto;
+        height: 110px;
+        border-radius: 20px;
+        padding: 10px 4px;
+        box-sizing: border-box;
+        justify-content: center;
+    }
+
+    /* ── Summary: icons ─────────────────────────────────── */
     .summary-main .circle,
     .summary-main .circlee {
         width: 40px;
         height: 40px;
-    }
-
-    .padding-bottom10 {
-        font-size: 14px;
-        padding-bottom: 6px;
+        flex-shrink: 0;
     }
 
     .icon-size,
     .summary-main .circlee .icon-size {
-        width: 24px;
-        height: 24px;
+        width: 22px;
+        height: 22px;
     }
 
+    .gap15 {
+        gap: 10px;
+    }
+
+    /* ── Summary: typography ────────────────────────────── */
     .summary-box .font-size64,
-    .sumary-third-line .font-size64 {
+    .sumary-third-line .font-size64,
+    .center.gap20 .font-size64 {
+        font-size: 46px;
+    }
+
+    .summary-email-count {
         font-size: 46px;
     }
 
     .font-size16,
     .font-size20 {
-        font-size: 14px;
+        font-size: 13px;
     }
 
-    .sumary-third-line {
-        width: 100%;
-        height: 140px;
-        padding: 0 10px;
-        margin-bottom: 18px;
-        border-radius: 24px;
-        justify-content: space-around;
+    .padding-bottom10 {
+        font-size: 12px;
+        padding-bottom: 2px;
+        white-space: normal;
+        line-height: 1.2;
     }
 
-    .sumary-third-line .seperator-line {
-        height: 84px;
+    .summary-deadline-label {
+        font-size: 11px;
+        white-space: normal;
     }
 
-    .box-size {
-        width: calc((100% - 28px)/3);
-        height: 120px;
-        border-radius: 24px;
-        padding: 12px 6px;
-        box-sizing: border-box;
-    }
-
-    .gap20 {
-        gap: 14px;
-    }
-
+    /* ── Non-summary rules ──────────────────────────────── */
     .priority-button {
         font-size: 16px;
     }
@@ -564,10 +606,6 @@
 
     .board-columns {
         padding-bottom: 200px;
-    }
-
-    .summary-second-line>section {
-        flex: 1;
     }
 
     .overlay-actions {
