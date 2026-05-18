@@ -260,9 +260,9 @@
     }
 
     .join_logo {
-        width: 64px;
-        height: 78px;
-        margin-top: 32px;
+        width: 32px;
+        height: 32px;
+        margin-top: 16px;
     }
 
     .header_right {
@@ -275,7 +275,7 @@
 
     .no_user_content {
         display: flex;
-        margin-top: 32px;
+        margin-top: 12px;
         margin-bottom: 16px;
         flex-direction: row;
         justify-content: center;
@@ -297,8 +297,7 @@
 
     .login {
         width: min(396px, calc(100vw - 32px));
-        margin-top: 100px;
-        height: 475px;
+        height: 430px;
         min-height: 430px;
         border-radius: 20px;
         padding: 30px 16px 22px;
@@ -323,7 +322,7 @@
 
     .underline {
         margin-top: 16px;
-        margin-bottom: 22px;
+        margin-bottom: 0;
         width: 88px;
     }
 
@@ -475,6 +474,7 @@
 }
 
 @media (max-width: 560px) {
+
     /* ── Summary: Row 1 — To-do + Done (2 equal columns) ── */
     .summary-second-line {
         display: grid;
@@ -484,7 +484,7 @@
         padding-bottom: 12px;
     }
 
-    .summary-second-line > section {
+    .summary-second-line>section {
         min-width: 0;
         display: flex;
     }
@@ -505,7 +505,7 @@
         margin-bottom: 12px !important;
     }
 
-    .summary-third-row > .sumary-third-line {
+    .summary-third-row>.sumary-third-line {
         width: auto;
         height: 130px;
         padding: 0 12px;
@@ -515,7 +515,7 @@
         gap: 8px;
     }
 
-    .summary-third-row > .box-size {
+    .summary-third-row>.box-size {
         width: auto;
         height: 130px;
         border-radius: 20px;
@@ -534,7 +534,7 @@
         gap: 10px;
     }
 
-    .center.gap20 > .box-size {
+    .center.gap20>.box-size {
         width: auto;
         height: 110px;
         border-radius: 20px;

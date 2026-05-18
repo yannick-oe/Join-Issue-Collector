@@ -19,36 +19,47 @@
          SCREEN 1 – Welcome / entry choice
     ════════════════════════════════════════════════ -->
     <section id="screenWelcome" class="sh-screen sh-welcome-screen" aria-label="Welcome screen">
-        <div class="sh-welcome-card">
-            <h1 class="sh-welcome-title">Welcome</h1>
-            <div class="sh-welcome-divider" aria-hidden="true"></div>
-            <p class="sh-welcome-subtitle">
-                Pick the option that suits your role: create a request as a
-                stakeholder or log in if you're part of the team.
-            </p>
+        <header class="sh-welcome-header">
+            <img class="sh-welcome-logo" src="../assets/icon/Capa 1.svg" alt="Join Logo" />
+        </header>
 
-            <div class="sh-welcome-roles">
-                <div class="sh-role-block">
-                    <div class="sh-role-label">
-                        <img class="sh-role-icon" src="../assets/icon/stakeholder.svg" alt="" aria-hidden="true" />
-                        <span>Are you a stakeholder?</span>
-                    </div>
-                    <button class="sh-btn sh-btn-primary" onclick="showStakeholderScreen()">
-                        Create request
-                    </button>
-                </div>
+        <div class="sh-welcome-body">
+            <div class="sh-welcome-card">
+                <h1 class="sh-welcome-title">Welcome</h1>
+                <div class="sh-welcome-divider" aria-hidden="true"></div>
+                <p class="sh-welcome-subtitle">
+                    Pick the option that suits your role: create a request as a
+                    stakeholder or log in if you're part of the team.
+                </p>
 
-                <div class="sh-role-block">
-                    <div class="sh-role-label">
-                        <img class="sh-role-icon" src="../assets/icon/teammember.svg" alt="" aria-hidden="true" />
-                        <span>Are you a team member?</span>
+                <div class="sh-welcome-roles">
+                    <div class="sh-role-block">
+                        <div class="sh-role-label">
+                            <img class="sh-role-icon" src="../assets/icon/stakeholder.svg" alt="" aria-hidden="true" />
+                            <span>Are you a stakeholder?</span>
+                        </div>
+                        <button class="sh-btn sh-btn-primary" onclick="showStakeholderScreen()">
+                            Create request
+                        </button>
                     </div>
-                    <button class="sh-btn sh-btn-ghost" onclick="goToMemberLogin()">
-                        Member log in
-                    </button>
+
+                    <div class="sh-role-block">
+                        <div class="sh-role-label">
+                            <img class="sh-role-icon" src="../assets/icon/teammember.svg" alt="" aria-hidden="true" />
+                            <span>Are you a team member?</span>
+                        </div>
+                        <button class="sh-btn sh-btn-ghost" onclick="goToMemberLogin()">
+                            Member log in
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <footer class="sh-welcome-footer">
+            <a href="./privacy-policy-external.html" class="sh-footer-link">Privacy Policy</a>
+            <a href="./legal-notice-external.html" class="sh-footer-link">Legal notice</a>
+        </footer>
     </section>
 
     <!-- ═══════════════════════════════════════════════
@@ -67,31 +78,31 @@
                 <img class="sh-back-icon" src="../assets/icon/arrow_left.svg" alt="" aria-hidden="true" />
             </button>
             <h2 class="sh-page-heading">Welcome</h2>
-            <div class="sh-content-grid">
-                <div class="sh-text-col">
-                    <p class="sh-text-lead">
-                        Easily create a ticket by sending an email — no extra steps needed.
-                    </p>
-                    <p class="sh-intro-text">
-                        On this platform, you can submit your feature requests via email.
-                        Our AI system will automatically generate a ticket with a deadline
-                        and priority level.
-                    </p>
-                    <p class="sh-intro-text">
-                        A total of 10 requests can be created per day. After this limit,
-                        emails can still be sent, but they will be manually reviewed by
-                        our team instead of generating AI tickets.
-                    </p>
-                    <button id="shCtaBtn" class="sh-btn sh-btn-primary sh-cta-btn" onclick="submitEmailRequest()">
-                        Create Email Request ✓
-                    </button>
-                </div>
 
-                <div class="sh-illustration-col">
-                    <img class="sh-illustration-img"
-                         src="../assets/icon/request.png"
-                         alt="Person creating a request at a kanban board" />
-                </div>
+            <p class="sh-text-lead">
+                Easily create a ticket by sending an email — no extra steps needed.
+            </p>
+
+            <div class="sh-illustration-col">
+                <img class="sh-illustration-img"
+                     src="../assets/icon/request.png"
+                     alt="Person creating a request at a kanban board" />
+            </div>
+
+            <div class="sh-body-col">
+                <p class="sh-intro-text">
+                    On this platform, you can submit your feature requests via email.
+                    Our AI system will automatically generate a ticket with a deadline
+                    and priority level.
+                </p>
+                <p class="sh-intro-text">
+                    A total of 10 requests can be created per day. After this limit,
+                    emails can still be sent, but they will be manually reviewed by
+                    our team instead of generating AI tickets.
+                </p>
+                <button id="shCtaBtn" class="sh-btn sh-btn-primary sh-cta-btn" onclick="submitEmailRequest()">
+                    Create Email Request ✓
+                </button>
             </div>
         </main>
 
@@ -117,30 +128,28 @@
                 <img class="sh-back-icon" src="../assets/icon/arrow_left.svg" alt="" aria-hidden="true" />
             </button>
             <h2 class="sh-page-heading">Welcome</h2>
-            <div class="sh-content-grid">
-                <div class="sh-text-col">
-                    <div class="sh-limit-banner" role="alert">
-                        <p class="sh-limit-banner-text">
-                            The daily 10-request limit has been reached!
-                        </p>
-                    </div>
 
-                    <p class="sh-intro-text">
-                        Need more? No worries — you can still send emails, but
-                        our team will review them manually instead of using AI
-                        to create tickets.
-                    </p>
+            <div class="sh-limit-banner" role="alert">
+                <p class="sh-limit-banner-text">
+                    The daily 10-request limit has been reached!
+                </p>
+            </div>
 
-                    <button class="sh-btn sh-btn-primary sh-cta-btn" onclick="sendDirectEmail()">
-                        Send an email ✓
-                    </button>
-                </div>
+            <div class="sh-illustration-col">
+                <img class="sh-illustration-img"
+                     src="../assets/icon/requestsent.png"
+                     alt="Person at a kanban board — request sent" />
+            </div>
 
-                <div class="sh-illustration-col">
-                    <img class="sh-illustration-img"
-                         src="../assets/icon/requestsent.png"
-                         alt="Person at a kanban board — request sent" />
-                </div>
+            <div class="sh-body-col">
+                <p class="sh-intro-text">
+                    Need more? No worries — you can still send emails, but
+                    our team will review them manually instead of using AI
+                    to create tickets.
+                </p>
+                <button class="sh-btn sh-btn-primary sh-cta-btn" onclick="sendDirectEmail()">
+                    Send an email ✓
+                </button>
             </div>
         </main>
 
