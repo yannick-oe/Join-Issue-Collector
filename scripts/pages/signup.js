@@ -2,7 +2,7 @@
  * Redirects the user to the signup page.
  */
 function signUp() {
-    window.location.href = "/pages/signup.html"
+    window.location.href = resolveFromRoot("pages/signup.html");
 }
 
 // #region Init
@@ -10,7 +10,7 @@ function signUp() {
  * Initializes signup page state.
  */
 function initSignupPage() {
-    if (hasActiveSession()) return window.location.href = "/pages/summary.html";
+    if (hasActiveSession()) return window.location.href = resolveFromRoot("pages/summary.html");
     clearSignupForm();
     syncSignupPasswordToggle("signupPassword");
     syncSignupPasswordToggle("signupPasswordRepeat");
@@ -51,7 +51,7 @@ function finalizeSignupError(message) {
  */
 function finalizeSignupSuccess(signupData) {
     showSignupToast();
-    setTimeout(() => window.location.href = "/index.html", 900);
+    setTimeout(() => window.location.href = resolveFromRoot("index.html"), 900);
 }
 // #endregion
 

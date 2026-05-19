@@ -34,20 +34,6 @@ body {
     width: 100%;
 }
 
-/* ── Welcome outer header (logo on dark bg) ───────────── */
-.sh-welcome-header {
-    width: 100%;
-    padding: 24px 40px;
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-}
-
-.sh-welcome-logo {
-    width: 52px;
-    height: auto;
-}
-
 /* ── Welcome body (flexible space, card centered) ──────── */
 .sh-welcome-body {
     flex: 1;
@@ -459,10 +445,6 @@ body {
         padding: 16px 24px;
     }
 
-    .sh-welcome-header {
-        padding: 20px 24px;
-    }
-
     .sh-footer {
         padding: 18px 24px;
         gap: 28px;
@@ -569,9 +551,5 @@ body {
 
     .sh-welcome-title {
         font-size: 24px;
-    }
-
-    .sh-welcome-header {
-        padding: 16px 16px;
     }
 }

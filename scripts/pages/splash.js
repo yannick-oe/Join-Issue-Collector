@@ -28,5 +28,5 @@ function applySplashTargetPosition(splash, rect) {
 }
 
 function goToLogin() {
-  window.location.href = "/index.html";
+  window.location.href = "../index.html";
 }

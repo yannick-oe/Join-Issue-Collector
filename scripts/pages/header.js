@@ -96,13 +96,25 @@ function buildUserInitials(name) {
 }
 
 /**
+ * Returns a URL relative to the project root that works on both local
+ * (Live Server) and deployed (subdirectory on DA server) environments.
+ * Pages inside /pages/ are one level deep; root-level pages are at depth 0.
+ * @param {string} subpath  e.g. "pages/stakeholder.html?view=welcome"
+ * @returns {string}
+ */
+function resolveFromRoot(subpath) {
+    const inPages = window.location.pathname.includes("/pages/");
+    return (inPages ? "../" : "./") + subpath;
+}
+
+/**
  * Logs out current user and redirects to the stakeholder welcome screen.
  * @param {Event} event
  */
 function logOutUser(event) {
     if (event) event.preventDefault();
     clearSessionUser();
-    window.location.href = "/pages/stakeholder.html?view=welcome";
+    window.location.href = resolveFromRoot("pages/stakeholder.html?view=welcome");
     return false;
 }
 
@@ -111,7 +123,7 @@ function logOutUser(event) {
  * to access a protected page — bypasses the stakeholder screen).
  */
 function redirectToLoginPage() {
-    window.location.href = "/index.html?mode=login";
+    window.location.href = resolveFromRoot("index.html?mode=login");
 }
 
 /**
@@ -123,5 +135,5 @@ function goBackOrFallback(fallbackUrl) {
         window.history.back();
         return;
     }
-    window.location.href = fallbackUrl || "/index.html";
+    window.location.href = fallbackUrl || resolveFromRoot("index.html");
 }
