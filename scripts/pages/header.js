@@ -96,15 +96,35 @@ function buildUserInitials(name) {
 }
 
 /**
- * Returns a URL relative to the project root that works on both local
- * (Live Server) and deployed (subdirectory on DA server) environments.
- * Pages inside /pages/ are one level deep; root-level pages are at depth 0.
- * @param {string} subpath  e.g. "pages/stakeholder.html?view=welcome"
- * @returns {string}
+ * Returns the absolute URL path to the project root, regardless of
+ * deployment subdirectory. Reads the real pathname at call time, so it
+ * is always accurate — no hardcoded domain, no hardcoded subfolder name.
+ *
+ * Examples
+ *   /pages/board.html                         → "/"
+ *   /Join-Issue-Collector/pages/board.html    → "/Join-Issue-Collector/"
+ *   /index.html                               → "/"
+ *   /Join-Issue-Collector/index.html          → "/Join-Issue-Collector/"
+ *
+ * @returns {string} Absolute server path ending with "/".
  */
-function resolveFromRoot(subpath) {
-    const inPages = window.location.pathname.includes("/pages/");
-    return (inPages ? "../" : "./") + subpath;
+function getProjectRoot() {
+    const path = window.location.pathname;
+    const idx = path.lastIndexOf("/pages/");
+    if (idx !== -1) return path.substring(0, idx + 1);
+    return path.substring(0, path.lastIndexOf("/") + 1);
+}
+
+/**
+ * Navigates to a path relative to the project root.
+ * Works on Live Server (project at server root) and any deployed
+ * subdirectory without hardcoding domain or folder names.
+ *
+ * @param {string} path Path relative to project root,
+ *   e.g. "pages/stakeholder.html?view=welcome" or "index.html?mode=login"
+ */
+function navigateTo(path) {
+    window.location.href = getProjectRoot() + path;
 }
 
 /**
@@ -114,7 +134,7 @@ function resolveFromRoot(subpath) {
 function logOutUser(event) {
     if (event) event.preventDefault();
     clearSessionUser();
-    window.location.href = resolveFromRoot("pages/stakeholder.html?view=welcome");
+    navigateTo("pages/stakeholder.html?view=welcome");
     return false;
 }
 
@@ -123,7 +143,7 @@ function logOutUser(event) {
  * to access a protected page — bypasses the stakeholder screen).
  */
 function redirectToLoginPage() {
-    window.location.href = resolveFromRoot("index.html?mode=login");
+    navigateTo("index.html?mode=login");
 }
 
 /**
@@ -135,5 +155,5 @@ function goBackOrFallback(fallbackUrl) {
         window.history.back();
         return;
     }
-    window.location.href = fallbackUrl || resolveFromRoot("index.html");
+    window.location.href = fallbackUrl || (getProjectRoot() + "index.html");
 }

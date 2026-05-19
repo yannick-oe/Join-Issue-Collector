@@ -9,7 +9,7 @@ function initLoginPage() {
   resetLoginUi();
   runLoginLogoIntro();
   if (hasActiveSession()) {
-    window.location.href = "./pages/summary.html";
+    navigateTo("pages/summary.html");
     return;
   }
   if (!isLoginModeRequested()) {
@@ -30,7 +30,7 @@ function isLoginModeRequested() {
  * Navigates to the public stakeholder welcome screen.
  */
 function redirectToStakeholderWelcome() {
-  window.location.href = "./pages/stakeholder.html?view=welcome";
+  navigateTo("pages/stakeholder.html?view=welcome");
 }
 
 /**
@@ -179,7 +179,7 @@ async function handleLoginSubmit(event) {
  */
 function completeLogin(user) {
   setSessionUser(buildSessionPayload(user));
-  setTimeout(() => window.location.href = "./pages/summary.html", 500);
+  setTimeout(() => navigateTo("pages/summary.html"), 500);
 }
 
 /**
