@@ -1,0 +1,618 @@
+{
+  "name": "Join Issue Collector",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {
+          "labelIds": []
+        }
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -1280,
+        704
+      ],
+      "id": "b2fce832-92ff-48a2-9d02-1f76bfc83bbd",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vfRjUnXLEjDqdYjO",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $(\"Gmail Trigger\").first().json.id }}",
+        "simple": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -1136,
+        704
+      ],
+      "id": "bb1ce7a8-0035-4cf5-84d5-022db7e7a651",
+      "name": "Get a message",
+      "webhookId": "7d395030-773d-42be-ae8d-13afc83c1a92",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vfRjUnXLEjDqdYjO",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const message = $(\"Get a message\").first().json;\n\nconst getHeader = (name) => {\n  const headers = message.payload?.headers || [];\n\n  const match = headers.find(\n    (header) =>\n      String(header.name || \"\").toLowerCase() === name.toLowerCase()\n  );\n\n  return match?.value || \"\";\n};\n\nconst cleanText = (value = \"\") => {\n  return String(value)\n    .replace(/\\r/g, \"\")\n    .replace(/\\n{3,}/g, \"\\n\\n\")\n    .trim();\n};\n\nconst stripHtml = (html = \"\") => {\n  return String(html)\n    .replace(/<br\\s*\\/?>/gi, \"\\n\")\n    .replace(/<\\/p>/gi, \"\\n\")\n    .replace(/<[^>]*>/g, \"\")\n    .replace(/&nbsp;/g, \" \")\n    .replace(/&amp;/g, \"&\")\n    .trim();\n};\n\nconst getBestBody = () => {\n  if (message.text) {\n    return cleanText(message.text);\n  }\n\n  if (message.textAsHtml) {\n    return cleanText(stripHtml(message.textAsHtml));\n  }\n\n  if (message.html) {\n    return cleanText(stripHtml(message.html));\n  }\n\n  if (message.snippet) {\n    return cleanText(message.snippet);\n  }\n\n  return \"\";\n};\n\nconst fromRaw = String(\n  getHeader(\"From\") ||\n  message.from?.text ||\n  message.From ||\n  \"\"\n);\n\nconst subject = String(\n  getHeader(\"Subject\") ||\n  message.subject ||\n  message.Subject ||\n  \"\"\n);\n\nconst body = getBestBody();\n\nconst emailMatch =\n  fromRaw.match(/<([^>]+)>/) ||\n  fromRaw.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}/i);\n\nconst senderEmail = Array.isArray(emailMatch)\n  ? emailMatch[1] || emailMatch[0]\n  : \"\";\n\nconst senderName = fromRaw\n  .replace(/<[^>]+>/g, \"\")\n  .replace(/\"/g, \"\")\n  .trim() || senderEmail;\n\nreturn [\n  {\n    json: {\n      messageId: message.id || \"\",\n      threadId: message.threadId || \"\",\n      senderName,\n      senderEmail,\n      subject,\n      body,\n      receivedAt: new Date().toISOString(),\n      today: new Date().toISOString().slice(0, 10),\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -992,
+        704
+      ],
+      "id": "9dc82d8e-ceac-4752-a0bc-6ac0639b91e1",
+      "name": "Normalize Email"
+    },
+    {
+      "parameters": {
+        "jsCode": "const mail = $(\"Normalize Email\").first().json;\nconst rawAiOutput = $json.output || \"{}\";\n\nconst parseAiOutput = () => {\n  try {\n    return typeof rawAiOutput === \"string\" ? JSON.parse(rawAiOutput) : rawAiOutput;\n  } catch {\n    return {};\n  }\n};\n\nconst ai = parseAiOutput();\n\nconst createTaskId = () => {\n  return `task-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;\n};\n\nconst normalizePriority = (priority = \"\") => {\n  const value = String(priority).toLowerCase().trim();\n\n  if (value.includes(\"urgent\") || value.includes(\"critical\") || value.includes(\"high\")) {\n    return \"urgent\";\n  }\n\n  if (value.includes(\"low\") || value.includes(\"minor\")) {\n    return \"low\";\n  }\n\n  return \"medium\";\n};\n\nconst normalizeCategory = (category = \"\") => {\n  return category === \"Technical Task\" ? \"Technical Task\" : \"User Story\";\n};\n\nconst normalizeDueDate = (dueDate = \"\") => {\n  const value = String(dueDate).trim();\n\n  if (/^\\d{4}-\\d{2}-\\d{2}$/.test(value)) {\n    return value;\n  }\n\n  const tomorrow = new Date();\n  tomorrow.setDate(tomorrow.getDate() + 1);\n  return tomorrow.toISOString().slice(0, 10);\n};\n\nconst normalizeSubtasks = (subtasks = []) => {\n  if (!Array.isArray(subtasks)) return [];\n\n  return subtasks\n    .map((subtask, index) => {\n      const text = typeof subtask === \"string\" ? subtask : subtask.text;\n\n      return {\n        id: `subtask-${Date.now()}-${index}`,\n        text: String(text || \"\").trim(),\n        done: false\n      };\n    })\n    .filter((subtask) => subtask.text.length > 0);\n};\n\nreturn [\n  {\n    json: {\n      id: createTaskId(),\n      title: String(ai.title || mail.subject || \"New Stakeholder Request\").trim(),\n      description: String(ai.description || mail.body || \"\").trim(),\n      category: normalizeCategory(ai.category),\n      priority: normalizePriority(ai.priority),\n      status: \"triage\",\n      dueDate: normalizeDueDate(ai.dueDate),\n      createdAt: new Date().toISOString(),\n\n      threadId: mail.threadId,\n      messageId: mail.messageId,\n\n      creatorType: \"external\",\n      creatorName: mail.senderName,\n      creatorEmail: mail.senderEmail,\n\n      isEmailRequest: true,\n      aiGenerated: true,\n      requestSource: \"email\",\n\n      assignedTo: [],\n      teamMembers: [],\n      subtasks: normalizeSubtasks(ai.subtasks),\n\n      requestStatus: \"new\",\n      requestReceivedAt: mail.receivedAt\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        384,
+        800
+      ],
+      "id": "643711f3-dcb0-4eb2-a77d-15a1604ab64f",
+      "name": "Build Join Task Payload"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://join-41a54-default-rtdb.europe-west1.firebasedatabase.app/tasks.json",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        592,
+        800
+      ],
+      "id": "f7994324-48d2-461d-ac41-21d0785d013d",
+      "name": "Create Firebase Task"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $(\"Normalize Email\").first().json.messageId }}",
+        "labelIds": [
+          "Label_2321782965049367819"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        976,
+        800
+      ],
+      "id": "5e0acb45-d64b-40a9-b947-bc9488c6a6e2",
+      "name": "Add Label erledigt",
+      "webhookId": "c731fa2d-2fd7-4239-baf3-40efea03afa0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vfRjUnXLEjDqdYjO",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "removeLabels",
+        "messageId": "={{ $(\"Normalize Email\").first().json.messageId }}",
+        "labelIds": [
+          "INBOX"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1168,
+        800
+      ],
+      "id": "53b41afa-ca36-4c9b-8919-4b184e5d6a08",
+      "name": "Remove Label Inbox",
+      "webhookId": "8e1236fc-77b7-4cc3-9908-a0dd99bafdf4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vfRjUnXLEjDqdYjO",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://join-41a54-default-rtdb.europe-west1.firebasedatabase.app/tasks.json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "orderBy",
+              "value": "=\"messageId\""
+            },
+            {
+              "name": "equalTo",
+              "value": "=\"{{ $(\"Normalize Email\").first().json.messageId }}\""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -640,
+        704
+      ],
+      "id": "125ecfdd-c7af-4ccc-b766-7275ef2ef924",
+      "name": "Check Existing Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4e02a525-6cd5-4bc4-9c69-73a20d25d54c",
+              "leftValue": "={{ Object.keys($json).length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -464,
+        704
+      ],
+      "id": "2ceb55b5-a084-4eb6-95ba-5278f7925553",
+      "name": "Already Exists?"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $(\"Normalize Email\").first().json.senderEmail }}",
+        "subject": "Your Join request was received",
+        "message": "=Hi {{ $(\"Normalize Email\").first().json.senderName }},  thank you for your request.  Your email has been processed and a new ticket was created in the Join board. The ticket has been placed in the Triage column and will be reviewed by the team.  Best regards Join Issue Collector",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        784,
+        800
+      ],
+      "id": "d6025ef0-8f7e-45c4-9274-9c93287dca57",
+      "name": "Send Success Reply",
+      "webhookId": "aa5be626-bfd3-42ed-be0d-5285dd14c5ba",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vfRjUnXLEjDqdYjO",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3b7f5519-e55c-4ba2-a9b9-17ea221521f9",
+              "leftValue": "={{ $json.limitReached }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -64,
+        704
+      ],
+      "id": "f5a20fac-37a8-4f51-83d7-21459ca3fd55",
+      "name": "Limit Reached?"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $(\"Normalize Email\").first().json.senderEmail }}",
+        "subject": "Request limit reached",
+        "message": "=Hi {{ $(\"Normalize Email\").first().json.senderName }},  your daily request limit has been reached.  You can create up to 10 requests per day. Please try again tomorrow.  Best regards Join Issue Collector",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        112,
+        544
+      ],
+      "id": "e37cdf54-71b0-4a4a-8052-ac1f89e1f176",
+      "name": "Send Limit Mail",
+      "webhookId": "2713b39e-6b9e-4683-abd4-8cc9c85eee9f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vfRjUnXLEjDqdYjO",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $(\"Normalize Email\").first().json.messageId }}",
+        "labelIds": [
+          "Label_3803559286550453248"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        288,
+        544
+      ],
+      "id": "e6b4d9d3-0486-45d1-9463-1064964db775",
+      "name": "Add Label limit-erreicht",
+      "webhookId": "bb218933-5e30-4117-92ae-6c0725ebed04",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vfRjUnXLEjDqdYjO",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "removeLabels",
+        "messageId": "={{ $(\"Normalize Email\").first().json.messageId }}",
+        "labelIds": [
+          "INBOX"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        544
+      ],
+      "id": "760da371-f541-4694-8126-98ff153b1766",
+      "name": "Remove Label Inbox1",
+      "webhookId": "f2a0d644-f6e2-42a9-bb81-b6d633243cab",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vfRjUnXLEjDqdYjO",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "1c6aab21-fa0c-4237-ad43-76debaf654f0",
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "[JOIN-ISSUE-COLLECTOR]",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -848,
+        704
+      ],
+      "id": "233ddef6-bc16-4387-b208-28473555508d",
+      "name": "Is Join Request?"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a strict email-to-task extraction agent for a Kanban board called Join.\n\nAnalyze the complete email message below and extract structured task data from it.\n\nReturn ONLY raw valid JSON.\nNo markdown.\nNo explanations.\nNo code fences.\nNo text before or after the JSON.\n\nCurrent date: {{$(\"Normalize Email\").first().json.today}}\n\nComplete email message:\n{{$(\"Normalize Email\").first().json.body}}\n\nReturn exactly this JSON structure:\n\n{\n  \"title\": \"\",\n  \"description\": \"\",\n  \"category\": \"\",\n  \"priority\": \"\",\n  \"dueDate\": \"\",\n  \"subtasks\": []\n}\n\nRules:\n\n1. Title\n- Find the actual request title in the complete email.\n- Prefer text after labels like \"Request title:\", \"Title:\", \"Feature:\", or \"Issue:\".\n- If no explicit title exists, create a concise title from the main request.\n- Maximum 60 characters.\n\n2. Description\n- Extract the main request description.\n- Prefer text after \"Request description:\" or \"Description:\".\n- If there is an \"Expected benefit:\" section, append it to the description.\n- Remove greetings, signatures, labels and empty placeholder text.\n- Do not include \"Hi Join team\", \"Best regards\" or label names.\n\n3. Category\n- Return \"Technical Task\" for bugs, technical fixes, implementation, refactoring, architecture, CSS, JavaScript, Firebase, API, automation, performance, data or workflow issues.\n- Return \"User Story\" for new features, UX/UI improvements, business requests, user-facing improvements or general product requests.\n- If unclear, return \"User Story\".\n\n4. Priority\n- Search the complete email for a priority field or priority wording.\n- If it contains \"urgent\", \"critical\", \"asap\", \"high priority\", \"important\" or \"blocking\", return \"urgent\".\n- If it contains \"low\", \"minor\", \"nice to have\" or \"not urgent\", return \"low\".\n- If it contains \"medium\", \"normal\" or \"standard\", return \"medium\".\n- Only if no priority information exists, return \"medium\".\n- Never return \"medium\" if the email clearly contains \"Urgent\".\n\n5. Due date\n- Search the complete email for a due date, deadline or timing requirement.\n- Convert the result to YYYY-MM-DD.\n- Interpret relative dates like \"tomorrow\", \"next Friday\", \"end of next week\" or \"in 2 days\" based on Current date.\n- If no due date exists, return tomorrow based on Current date.\n- Never return an empty dueDate.\n\n6. Subtasks\n- Search the complete email for suggested subtasks, checklist items, bullet points or implementation steps.\n- Extract every task-like bullet point.\n- Bullet points may start with \"-\", \"•\", \"*\", numbers or separate lines.\n- Stop at greetings or signature text.\n- Return each subtask exactly as:\n  { \"text\": \"subtask text\", \"done\": false }\n- If no subtasks exist, return [].\n\nValid output example:\n\n{\n  \"title\": \"Fix login validation bug\",\n  \"description\": \"The login form accepts invalid email addresses. This improves data quality.\",\n  \"category\": \"Technical Task\",\n  \"priority\": \"urgent\",\n  \"dueDate\": \"2026-05-16\",\n  \"subtasks\": [\n    { \"text\": \"Validate email format\", \"done\": false },\n    { \"text\": \"Show error message\", \"done\": false }\n  ]\n}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        96,
+        800
+      ],
+      "id": "b141f3a5-309a-4de1-9d2c-a9bf40a65498",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxOutputTokens": 2000,
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        96,
+        976
+      ],
+      "id": "5742d66d-822f-48d0-b03b-d85e63abf23a",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "A0g7nS7GCNDfBX6x",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const staticData = $getWorkflowStaticData(\"global\");\n\nconst LIMIT = 10;\nconst today = new Date().toISOString().split(\"T\")[0];\n\nstaticData.emailCounter ??= {};\nstaticData.emailCounter[today] ??= 0;\n\nconst currentCount = Number(staticData.emailCounter[today]) || 0;\nconst limitReached = currentCount >= LIMIT;\n\nif (!limitReached) {\n  staticData.emailCounter[today] = currentCount + 1;\n}\n\nreturn [\n  {\n    json: {\n      today,\n      count: staticData.emailCounter[today],\n      limitReached,\n      remaining: Math.max(0, LIMIT - staticData.emailCounter[today]),\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -256,
+        704
+      ],
+      "id": "3a7fb76f-0f01-416a-bf9e-fd94becef673",
+      "name": "Check Daily Limit"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a message": {
+      "main": [
+        [
+          {
+            "node": "Normalize Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Email": {
+      "main": [
+        [
+          {
+            "node": "Is Join Request?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Join Task Payload": {
+      "main": [
+        [
+          {
+            "node": "Create Firebase Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Firebase Task": {
+      "main": [
+        [
+          {
+            "node": "Send Success Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Label erledigt": {
+      "main": [
+        [
+          {
+            "node": "Remove Label Inbox",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Existing Request": {
+      "main": [
+        [
+          {
+            "node": "Already Exists?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Already Exists?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Check Daily Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Success Reply": {
+      "main": [
+        [
+          {
+            "node": "Add Label erledigt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Limit Mail": {
+      "main": [
+        [
+          {
+            "node": "Add Label limit-erreicht",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Label limit-erreicht": {
+      "main": [
+        [
+          {
+            "node": "Remove Label Inbox1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit Reached?": {
+      "main": [
+        [
+          {
+            "node": "Send Limit Mail",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Join Request?": {
+      "main": [
+        [
+          {
+            "node": "Check Existing Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Build Join Task Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Daily Limit": {
+      "main": [
+        [
+          {
+            "node": "Limit Reached?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "193b161b-a660-4098-9bc0-18a04cf85fe8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a85f3b8e02368826b1bb6e5370fd4c56627e2cdf47631fca134b18009cf025fd"
+  },
+  "id": "YcdvQaqcDHbxhrxG",
+  "tags": []
+}
